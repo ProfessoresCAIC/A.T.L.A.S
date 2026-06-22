@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warframe — Guia Definitivo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
+:root {
+  --bg:     #060b14;
+  --bg2:    #0a1422;
+  --bg3:    #0f1d30;
+  --bg4:    #040810;
+  --border: #172338;
+  --border2:#223550;
+  --text:   #cfe0f5;
+  --text2:  #6e8faf;
+  --text3:  #344d68;
+  --accent: #5cc8f0;
+  --gold:   #c9972e;
+  --gold2:  #f0c96a;
+  --green:  #35a86e;
+  --red:    #c94545;
+  --orange: #c96a30;
+  --purple: #7d5fc8;
+  --blue:   #3a72c8;
+  --void:   #6840c0;
+
+  /* Clip-path corners */
+  --clip-sm: polygon(8px 0%,100% 0%,100% calc(100% - 8px),calc(100% - 8px) 100%,0% 100%,0% 8px);
+  --clip-md: polygon(14px 0%,100% 0%,100% calc(100% - 14px),calc(100% - 14px) 100%,0% 100%,0% 14px);
+  --clip-lg: polygon(20px 0%,100% 0%,100% calc(100% - 20px),calc(100% - 20px) 100%,0% 100%,0% 20px);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+
+/* ── CANVAS ── */
+body{
+  background-color:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  font-size:14px;line-height:1.5;
+  overflow-x:hidden;
+}
+
+/* Starfield canvas fixo no fundo */
+#starfield{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.6;
+}
+.tab-nav,header,main,.guide-wrap,.armas-wrap,.stats-wrap,.controls,#tab-checklist,#tab-mods,#tab-armas,#tab-farm,#tab-dicas{
+  position:relative;z-index:1;
+}
+
+/* ── NAV ── */
+.tab-nav{
+  background:rgba(4,8,16,.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(201,151,46,.18);
+  display:flex;padding:0;gap:0;
+  position:sticky;top:0;z-index:200;
+  justify-content:center;
+  box-shadow:0 1px 30px rgba(0,0,0,.6);
+}
+.tab-btn{
+  padding:14px 22px;
+  font-family:'Rajdhani',sans-serif;
+  font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--text3);background:none;border:none;
+  border-bottom:2px solid transparent;
+  cursor:pointer;
+  transition:color .25s,border-color .25s,text-shadow .25s;
+  position:relative;
+}
+.tab-btn::after{
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold2),transparent);
+  transition:width .3s;
+}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn:hover::after{width:60%;}
+.tab-btn.active{
+  color:var(--gold2);
+  text-shadow:0 0 20px rgba(240,201,106,.35);
+}
+.tab-btn.active::after{width:100%;}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+
+/* ── HEADER ── */
+header{
+  background:linear-gradient(160deg,#050d1a 0%,#091628 45%,#070f1e 100%);
+  border-bottom:1px solid rgba(201,151,46,.15);
+  padding:3rem 2rem 2.5rem;
+  position:relative;overflow:hidden;
+}
+/* Grid diagonal estilo HUD */
+header::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(201,151,46,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,151,46,.03) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 90% 100% at 65% 50%,black 0%,transparent 70%);
+  pointer-events:none;
+}
+/* Brilho radial canto direito */
+header::after{
+  content:'';position:absolute;
+  top:-80px;right:-80px;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(201,151,46,.1) 0%,transparent 65%);
+  pointer-events:none;
+  animation:headerGlow 6s ease-in-out infinite alternate;
+}
+@keyframes headerGlow{
+  from{opacity:.7;transform:scale(1);}
+  to{opacity:1;transform:scale(1.1);}
+}
+.header-accent-line{
+  position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(201,151,46,.6) 30%,rgba(92,200,240,.5) 65%,transparent 100%);
+  animation:scanLine 4s linear infinite;
+}
+@keyframes scanLine{
+  0%{opacity:.5;} 50%{opacity:1;} 100%{opacity:.5;}
+}
+.header-inner{
+  max-width:960px;margin:0 auto;
+  position:relative;display:flex;align-items:center;gap:2.5rem;
+}
+.header-logo{flex-shrink:0;}
+.header-logo svg{
+  filter:drop-shadow(0 0 12px rgba(201,151,46,.4));
+  animation:logoFloat 5s ease-in-out infinite;
+}
+@keyframes logoFloat{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-4px);}
+}
+.header-text{flex:1;}
+.header-eyebrow{
+  font-family:'Rajdhani',sans-serif;
+  font-size:10px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--gold);opacity:.7;margin-bottom:.5rem;
+  display:flex;align-items:center;gap:8px;
+}
+.header-eyebrow::before,.header-eyebrow::after{
+  content:'';flex:1;max-width:40px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+}
+.header-eyebrow::after{
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+header h1{
+  font-family:'Rajdhani',sans-serif;
+  font-size:3rem;font-weight:700;
+  letter-spacing:3px;line-height:.95;
+  color:#fff;
+}
+header h1 .word-wf{
+  color:#e8f4ff;
+  text-shadow:0 0 60px rgba(92,200,240,.15);
+}
+header h1 .word-guide{
+  color:var(--gold2);
+  text-shadow:0 0 40px rgba(240,201,106,.5);
+  position:relative;
+}
+.header-sub{
+  color:var(--text2);font-size:12px;margin-top:.8rem;
+  letter-spacing:.5px;display:flex;align-items:center;gap:6px;
+  flex-wrap:wrap;
+}
+.header-sub span{color:var(--text3);}
+
+/* Scan line animada horizontal */
+.scan-line{
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(92,200,240,.3),transparent);
+  animation:scanAcross 8s linear infinite;
+  pointer-events:none;
+}
+@keyframes scanAcross{
+  0%{top:0%;opacity:0;}
+  5%{opacity:1;}
+  95%{opacity:1;}
+  100%{top:100%;opacity:0;}
+}
+
+/* ── STATS ── */
+.stats-wrap{max-width:960px;margin:1.5rem auto;padding:0 2rem;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem;}
+.stat-card{
+  background:linear-gradient(135deg,rgba(10,20,34,.9),rgba(6,11,20,.95));
+  border:1px solid var(--border);
+  clip-path:var(--clip-sm);
+  padding:14px 16px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s;
+}
+.stat-card:hover{border-color:var(--border2);}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,151,46,.4),transparent);
+}
+.stat-card::after{
+  content:'';position:absolute;
+  top:8px;right:8px;width:4px;height:4px;
+  background:var(--gold);opacity:.4;
+  clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+}
+.stat-card .slabel{
+  font-size:9px;color:var(--text3);letter-spacing:2.5px;text-transform:uppercase;
+  margin-bottom:4px;
+}
+.stat-card .svalue{
+  font-family:'Rajdhani',sans-serif;font-size:30px;font-weight:700;
+  color:var(--gold2);line-height:1;
+}
+.progress-outer{
+  height:2px;background:rgba(255,255,255,.04);
+  border-radius:0;overflow:hidden;margin-bottom:6px;
+}
+.progress-inner{
+  height:100%;
+  background:linear-gradient(90deg,var(--gold),var(--accent),var(--gold2));
+  background-size:200% 100%;
+  animation:progressShimmer 3s linear infinite;
+  transition:width .5s ease;
+}
+@keyframes progressShimmer{
+  0%{background-position:200% 0;}
+  100%{background-position:-200% 0;}
+}
+.progress-label{font-size:11px;color:var(--text3);letter-spacing:.3px;}
+.controls{
+  max-width:960px;margin:0 auto 1.5rem;padding:0 2rem;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.legend{display:flex;gap:16px;flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);letter-spacing:.3px;}
+.leg-dot{width:8px;height:8px;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);}
+.btn-reset{
+  margin-left:auto;
+  background:none;
+  border:1px solid var(--border2);
+  color:var(--text3);
+  clip-path:var(--clip-sm);
+  padding:6px 16px;font-size:11px;
+  cursor:pointer;font-family:'Rajdhani',sans-serif;
+  letter-spacing:1px;text-transform:uppercase;
+  transition:border-color .2s,color .2s;
+}
+.btn-reset:hover{border-color:var(--red);color:var(--red);}
+
+/* ── MAIN ── */
+main{max-width:960px;margin:0 auto;padding:0 2rem 4rem;}
+
+/* ── ARC ── */
+.arc{margin-bottom:2.5rem;}
+.arc-header{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 0;cursor:pointer;user-select:none;
+  border-bottom:1px solid var(--border);
+  margin-bottom:12px;
+  position:relative;
+}
+.arc-header::after{
+  content:'';position:absolute;bottom:-1px;left:0;
+  height:1px;width:0;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  transition:width .4s;
+}
+.arc-header:hover::after{width:100%;}
+.arc-bar{
+  width:2px;height:20px;flex-shrink:0;
+  position:relative;
+}
+.arc-bar::after{
+  content:'';position:absolute;
+  top:-3px;left:-2px;right:-2px;bottom:-3px;
+  background:inherit;filter:blur(4px);opacity:.5;
+}
+.arc-title{
+  font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;
+  color:#ddeeff;letter-spacing:1.5px;text-transform:uppercase;flex:1;
+}
+.arc-count{
+  font-family:'Rajdhani',sans-serif;
+  font-size:11px;color:var(--text3);letter-spacing:1px;
+}
+.arc-mini-bar{height:1px;background:rgba(255,255,255,.04);overflow:hidden;margin-bottom:12px;}
+.arc-mini-inner{height:100%;transition:width .4s;}
+.chevron{
+  font-size:14px;color:var(--text3);
+  transition:transform .25s,color .2s;
+  line-height:1;
+}
+.chevron.open{transform:rotate(180deg);color:var(--gold);}
+
+/* ── ARC TIP ── */
+.arc-tip{
+  background:linear-gradient(135deg,rgba(201,151,46,.06),rgba(92,200,240,.03));
+  border:1px solid rgba(201,151,46,.12);
+  border-left:2px solid var(--gold);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);
+  padding:10px 16px;margin-bottom:12px;
+  font-size:12px;color:var(--text2);line-height:1.6;
+}
+.arc-tip strong{
+  color:var(--gold);font-size:9px;letter-spacing:2.5px;
+  text-transform:uppercase;display:block;margin-bottom:5px;
+}
+
+/* ── ITEMS ── */
+.item-list{display:flex;flex-direction:column;gap:2px;}
+.item{
+  display:flex;align-items:flex-start;gap:12px;padding:9px 14px;
+  background:rgba(10,20,34,.6);
+  border:1px solid transparent;
+  border-left:2px solid transparent;
+  cursor:pointer;
+  transition:background .15s,border-color .15s;
+  position:relative;
+}
+.item::before{
+  content:'';position:absolute;
+  left:0;top:0;bottom:0;width:0;
+  background:var(--item-accent,var(--purple));
+  opacity:0;transition:width .2s,opacity .2s;
+}
+.item:hover{
+  background:rgba(15,29,48,.8);
+  border-color:var(--border);
+  border-left-color:var(--border2);
+}
+.item:hover::before{width:2px;opacity:.6;}
+.item.done{opacity:.3;}
+.item.done .iname{text-decoration:line-through;}
+/* Cor da borda por tipo */
+.item[data-type="q"]{--item-accent:var(--purple);}
+.item[data-type="f"]{--item-accent:var(--gold);}
+.item[data-type="s"]{--item-accent:var(--green);}
+.item[data-type="t"]{--item-accent:var(--blue);}
+
+.chk{
+  width:14px;height:14px;
+  border:1px solid var(--border2);
+  clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+  transition:background .15s,border-color .15s;
+}
+.chk.on{background:var(--green);border-color:var(--green);}
+.chk.on::after{content:'✓';font-size:9px;color:#fff;font-weight:700;}
+.ibody{flex:1;min-width:0;}
+.iname{font-size:13px;font-weight:500;color:var(--text);}
+.inote{font-size:11px;color:var(--text3);margin-top:3px;line-height:1.4;}
+.pill{
+  display:inline-block;font-size:9px;padding:1px 6px;
+  clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);
+  font-weight:700;letter-spacing:.6px;white-space:nowrap;margin-left:6px;
+}
+.pq{background:rgba(125,95,200,.15);color:var(--purple);border:1px solid rgba(125,95,200,.25);}
+.pf{background:rgba(201,151,46,.15);color:var(--gold2);border:1px solid rgba(201,151,46,.25);}
+.ps{background:rgba(53,168,110,.15);color:var(--green);border:1px solid rgba(53,168,110,.25);}
+.pt{background:rgba(58,114,200,.15);color:var(--blue);border:1px solid rgba(58,114,200,.25);}
+
+/* ── WORLD BLOCKS ── */
+.world-block{
+  margin:6px 0 4px;
+  border:1px solid var(--border);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);
+  overflow:visible;
+}
+.world-hdr{
+  display:flex;align-items:center;gap:8px;padding:8px 14px;
+  cursor:pointer;user-select:none;
+  background:rgba(6,12,20,.8);
+  border-bottom:1px solid transparent;
+  transition:border-color .2s,background .2s;
+}
+.world-hdr:hover{background:rgba(10,20,34,.9);}
+.world-hdr.open{border-bottom-color:var(--border);}
+.world-dot{
+  width:6px;height:6px;flex-shrink:0;
+  clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+}
+.world-name{
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;
+  color:var(--text);flex:1;letter-spacing:.8px;text-transform:uppercase;
+}
+.world-count{font-size:10px;color:var(--text3);letter-spacing:.5px;}
+.world-body{padding:6px 8px;display:flex;flex-direction:column;gap:2px;background:rgba(4,8,16,.5);}
+.sitem{
+  display:flex;align-items:flex-start;gap:8px;padding:7px 12px;
+  background:rgba(10,20,34,.7);
+  border:1px solid var(--border);
+  border-left:2px solid transparent;
+  cursor:pointer;
+  transition:border-color .15s,background .15s;
+}
+.sitem:hover{background:rgba(15,29,48,.9);border-color:var(--border2);}
+.sitem.done{opacity:.3;}
+.sitem.done .siname{text-decoration:line-through;}
+.schk{
+  width:12px;height:12px;
+  border:1px solid var(--border2);
+  clip-path:polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+}
+.schk.on{background:var(--accent);border-color:var(--accent);}
+.schk.on::after{content:'✓';font-size:8px;color:#fff;font-weight:700;}
+.sbody{flex:1;}
+.siname{font-size:12px;font-weight:500;color:var(--text);}
+.sinote{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.4;}
+.sprio{
+  display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;
+  clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);
+  margin-top:4px;letter-spacing:.4px;
+}
+.pm{background:rgba(201,69,69,.15);color:var(--red);border:1px solid rgba(201,69,69,.25);}
+.pg{background:rgba(201,151,46,.15);color:var(--gold2);border:1px solid rgba(201,151,46,.25);}
+.pd{background:rgba(53,168,110,.15);color:var(--green);border:1px solid rgba(53,168,110,.25);}
+.arc-divider{
+  border:none;margin:2rem 0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  position:relative;
+}
+.arc-divider::after{
+  content:'◆';position:absolute;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:8px;color:var(--text3);
+  background:var(--bg);padding:0 8px;
+}
+
+/* ── GUIDE PANELS ── */
+.guide-wrap{max-width:960px;margin:0 auto;padding:1.5rem 2rem 4rem;}
+.guide-section{margin-bottom:3rem;}
+.guide-section h2{
+  font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;
+  color:#ddeeff;letter-spacing:2px;text-transform:uppercase;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:1.25rem;
+  position:relative;
+  display:flex;align-items:center;gap:10px;
+}
+.guide-section h2::before{
+  content:'';width:3px;height:18px;
+  background:linear-gradient(to bottom,var(--gold),var(--accent));
+  flex-shrink:0;
+}
+.guide-section h2::after{
+  content:'';position:absolute;bottom:-1px;left:0;width:80px;height:1px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.guide-section h3{
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;
+  color:var(--accent);margin:1.5rem 0 .75rem;
+  letter-spacing:2px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.guide-section h3::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border),transparent);
+}
+.guide-intro{font-size:13px;color:var(--text2);margin-bottom:1.5rem;line-height:1.8;}
+
+/* ── MOD CARDS ── */
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;}
+.mod-card{
+  background:linear-gradient(135deg,rgba(10,20,34,.9),rgba(6,11,20,.95));
+  border:1px solid var(--border);
+  clip-path:var(--clip-sm);
+  padding:14px 16px;
+  transition:border-color .2s,transform .15s;
+  position:relative;
+}
+.mod-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(92,200,240,.15),transparent);
+  opacity:0;transition:opacity .2s;
+}
+.mod-card:hover{border-color:var(--border2);transform:translateY(-1px);}
+.mod-card:hover::before{opacity:1;}
+.mod-card-title{
+  font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;
+  color:#ddeeff;margin-bottom:5px;letter-spacing:.3px;
+}
+.mod-card-where{
+  font-size:10px;color:var(--gold);opacity:.75;
+  margin-bottom:8px;letter-spacing:.5px;
+  display:flex;align-items:center;gap:5px;
+}
+.mod-card-where::before{content:'📍';font-size:9px;}
+.mod-card-desc{font-size:12px;color:var(--text2);line-height:1.55;}
+.mod-tier{
+  display:inline-block;font-size:9px;font-weight:700;
+  padding:1px 7px;margin-left:6px;vertical-align:middle;letter-spacing:.5px;
+  clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);
+}
+.tier-start{background:rgba(53,168,110,.15);color:var(--green);border:1px solid rgba(53,168,110,.25);}
+.tier-mid{background:rgba(58,114,200,.15);color:var(--blue);border:1px solid rgba(58,114,200,.25);}
+.tier-end{background:rgba(125,95,200,.15);color:var(--purple);border:1px solid rgba(125,95,200,.25);}
+
+/* ── WEAPON TABLE ── */
+.weapon-group{margin-bottom:1.5rem;}
+.weapon-group h3{
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;
+  color:var(--gold2);margin-bottom:.75rem;
+  text-transform:uppercase;letter-spacing:2.5px;
+  display:flex;align-items:center;gap:8px;
+}
+.weapon-group h3::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border),transparent);
+}
+.weapon-list{display:flex;flex-direction:column;gap:6px;}
+.weapon-item{
+  background:rgba(10,20,34,.8);
+  border:1px solid var(--border);
+  border-left:2px solid var(--border2);
+  padding:10px 14px;
+  display:flex;align-items:flex-start;gap:12px;
+  transition:border-color .15s,background .15s;
+  position:relative;overflow:hidden;
+}
+.weapon-item::after{
+  content:'';position:absolute;
+  top:0;right:0;width:40px;height:40px;
+  background:radial-gradient(circle at top right,rgba(201,151,46,.05),transparent 70%);
+}
+.weapon-item:hover{background:rgba(15,29,48,.9);border-color:var(--border2);}
+.weapon-phase{width:76px;flex-shrink:0;}
+.weapon-phase span{
+  display:inline-block;font-size:9px;font-weight:700;
+  padding:2px 8px;text-align:center;letter-spacing:.5px;
+  clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);
+}
+.phase-early{background:rgba(53,168,110,.15);color:var(--green);border:1px solid rgba(53,168,110,.25);}
+.phase-mid{background:rgba(58,114,200,.15);color:var(--blue);border:1px solid rgba(58,114,200,.25);}
+.phase-late{background:rgba(125,95,200,.15);color:var(--purple);border:1px solid rgba(125,95,200,.25);}
+.phase-end{background:rgba(201,69,69,.15);color:var(--red);border:1px solid rgba(201,69,69,.25);}
+.weapon-info{flex:1;}
+.weapon-name{font-size:13px;font-weight:600;color:#ddeeff;}
+.weapon-mr{font-size:10px;color:var(--gold);margin-left:6px;letter-spacing:.3px;}
+.weapon-desc{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5;}
+
+/* ── RESOURCE TABLE ── */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;}
+.res-card{
+  background:rgba(10,20,34,.8);
+  border:1px solid var(--border);
+  clip-path:var(--clip-sm);
+  padding:12px 14px;
+  transition:border-color .2s,transform .15s;
+}
+.res-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:#ddeeff;margin-bottom:3px;letter-spacing:.3px;}
+.res-rarity{
+  display:inline-block;font-size:9px;font-weight:700;padding:1px 7px;
+  clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);
+  margin-left:6px;vertical-align:middle;letter-spacing:.5px;
+}
+.r-common{background:rgba(52,77,104,.3);color:var(--text2);border:1px solid rgba(52,77,104,.4);}
+.r-uncommon{background:rgba(58,114,200,.15);color:var(--blue);border:1px solid rgba(58,114,200,.25);}
+.r-rare{background:rgba(201,151,46,.15);color:var(--gold2);border:1px solid rgba(201,151,46,.25);}
+.r-special{background:rgba(201,69,69,.15);color:var(--red);border:1px solid rgba(201,69,69,.25);}
+.res-best{font-size:12px;color:var(--accent);margin:8px 0 3px;font-weight:500;letter-spacing:.2px;}
+.res-note{font-size:11px;color:var(--text3);line-height:1.45;}
+
+/* XP */
+.xp-list{display:flex;flex-direction:column;gap:6px;}
+.xp-item{
+  background:rgba(10,20,34,.8);
+  border:1px solid var(--border);
+  border-left:2px solid var(--accent);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);
+  padding:10px 14px;
+  transition:border-color .2s;
+}
+.xp-item:hover{border-color:var(--border2);}
+.xp-name{font-size:13px;font-weight:600;color:#ddeeff;letter-spacing:.2px;}
+.xp-tag{
+  display:inline-block;font-size:9px;font-weight:700;
+  padding:1px 7px;margin-left:6px;vertical-align:middle;
+  clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);
+  background:rgba(53,168,110,.15);color:var(--green);border:1px solid rgba(53,168,110,.25);
+}
+.xp-desc{font-size:12px;color:var(--text2);margin-top:5px;line-height:1.5;}
+
+/* TIPS */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;}
+.tip-card{
+  background:rgba(10,20,34,.8);
+  border:1px solid var(--border);
+  border-left:2px solid var(--accent);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);
+  padding:13px 15px;
+  transition:border-color .2s,transform .15s;
+  position:relative;overflow:hidden;
+}
+.tip-card::after{
+  content:'';position:absolute;
+  bottom:0;right:0;width:30px;height:30px;
+  background:radial-gradient(circle at bottom right,rgba(92,200,240,.06),transparent 70%);
+}
+.tip-card:hover{border-color:var(--border2);border-left-color:var(--gold);transform:translateY(-1px);}
+.tip-title{
+  font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;
+  color:var(--accent);margin-bottom:6px;letter-spacing:.5px;
+  display:flex;align-items:center;gap:6px;
+}
+.tip-title::before{content:'▸';color:var(--gold);font-size:10px;}
+.tip-body{font-size:12px;color:var(--text2);line-height:1.55;}
+
+/* FOOTER */
+footer{
+  text-align:center;padding:3rem 2rem 2rem;
+  font-size:11px;color:var(--text3);letter-spacing:.8px;
+  position:relative;z-index:1;
+  max-width:960px;margin:0 auto;
+}
+footer::before{
+  content:'';display:block;
+  width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+  margin-bottom:1.5rem;
+}
+
+@media(max-width:700px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  header h1{font-size:2rem;}
+  .header-logo{display:none;}
+  .controls{flex-direction:column;align-items:flex-start;}
+  .btn-reset{margin-left:0;}
+  .tab-btn{padding:12px 10px;font-size:11px;}
+  .header-inner{gap:1.2rem;}
+}
+</style>
+</head>
+<body>
+<canvas id="starfield"></canvas>
+<script>
+(function(){
+  const c=document.getElementById('starfield');
+  const ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  function initStars(){
+    stars=[];
+    const n=Math.floor(W*H/6000);
+    for(let i=0;i<n;i++){
+      stars.push({
+        x:Math.random()*W, y:Math.random()*H,
+        r:Math.random()*.9+.1,
+        o:Math.random()*.6+.1,
+        s:Math.random()*.15+.02,
+        p:Math.random()*Math.PI*2
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const t=Date.now()/1000;
+    for(const s of stars){
+      const pulse=s.o*(0.6+0.4*Math.sin(t*s.s+s.p));
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(180,220,255,${pulse})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  resize(); initStars(); draw();
+  window.addEventListener('resize',()=>{resize();initStars();});
+})();
+</script>
+
+<header>
+  <div class="header-inner">
+    <!-- Logo Lotus SVG inline -->
+    <div class="header-logo">
+      <svg width="72" height="72" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" opacity="0.85">
+        <!-- Pétalas externas -->
+        <path d="M50 10 C50 10 38 28 38 50 C38 62 44 72 50 78 C56 72 62 62 62 50 C62 28 50 10 50 10Z" fill="none" stroke="#d4a843" stroke-width="1.2" opacity="0.7"/>
+        <path d="M10 50 C10 50 28 38 50 38 C62 44 72 44 78 50 C72 56 62 62 50 62 C28 62 10 50 10 50Z" fill="none" stroke="#d4a843" stroke-width="1.2" opacity="0.7"/>
+        <path d="M21.7 21.7 C21.7 21.7 33 37 50 50 C57 42 63 33 63 21.7 C52 16 38 16 21.7 21.7Z" fill="none" stroke="#5cc8f0" stroke-width="1" opacity="0.5"/>
+        <path d="M78.3 21.7 C62 16 48 16 37 21.7 C37 33 43 42 50 50 C67 37 78.3 21.7 78.3 21.7Z" fill="none" stroke="#5cc8f0" stroke-width="1" opacity="0.5"/>
+        <path d="M21.7 78.3 C37 63 37 63 50 50 C43 42 33 37 21.7 37 C16 48 16 62 21.7 78.3Z" fill="none" stroke="#5cc8f0" stroke-width="1" opacity="0.5"/>
+        <path d="M78.3 78.3 C84 62 84 48 78.3 37 C67 37 57 42 50 50 C63 63 78.3 78.3 78.3 78.3Z" fill="none" stroke="#5cc8f0" stroke-width="1" opacity="0.5"/>
+        <!-- Círculo central -->
+        <circle cx="50" cy="50" r="8" fill="none" stroke="#d4a843" stroke-width="1.5" opacity="0.9"/>
+        <circle cx="50" cy="50" r="3" fill="#d4a843" opacity="0.8"/>
+        <!-- Anel externo -->
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#d4a843" stroke-width="0.5" stroke-dasharray="3 4" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <div class="header-eyebrow">Tenno · Guia Definitivo</div>
+      <h1><span class="word-wf">WARFRAME</span> <span class="word-guide">ATLAS</span></h1>
+      <p class="header-sub">Checklist de progressão &nbsp;·&nbsp; Mods essenciais &nbsp;·&nbsp; Armas por fase &nbsp;·&nbsp; Farm de recursos &nbsp;·&nbsp; Dicas para todos os níveis</p>
+    </div>
+  </div>
+  <div class="header-accent-line"></div>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('checklist',this)">✅ Checklist</button>
+  <button class="tab-btn" onclick="showTab('mods',this)">⚙️ Mods</button>
+  <button class="tab-btn" onclick="showTab('armas',this)">🔫 Armas</button>
+  <button class="tab-btn" onclick="showTab('farm',this)">🌾 Farm</button>
+  <button class="tab-btn" onclick="showTab('dicas',this)">💡 Dicas</button>
+</nav>
+
+<!-- ═══════════════════ CHECKLIST ═══════════════════ -->
+<div id="tab-checklist" class="tab-panel active">
+  <div class="stats-wrap">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="slabel">Total</div><div class="svalue" id="s-total">–</div></div>
+      <div class="stat-card"><div class="slabel">Feitas</div><div class="svalue" id="s-done" style="color:var(--green)">–</div></div>
+      <div class="stat-card"><div class="slabel">Restando</div><div class="svalue" id="s-left" style="color:var(--orange)">–</div></div>
+      <div class="stat-card"><div class="slabel">Progresso</div><div class="svalue" id="s-pct" style="color:var(--gold)">–</div></div>
+    </div>
+    <div class="progress-outer"><div class="progress-inner" id="gbar" style="width:0%"></div></div>
+    <div class="progress-label" id="gtxt">Carregando…</div>
+  </div>
+  <div class="controls">
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--purple)"></div>Quest</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--gold)"></div>Farm de Warframe</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>Side quest</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--blue)"></div>Tarefa/mundo</div>
+    </div>
+    <button class="btn-reset" onclick="resetAll()">↺ Resetar</button>
+  </div>
+  <main id="root"></main>
+</div>
+
+<!-- ═══════════════════ MODS ═══════════════════ -->
+<div id="tab-mods" class="tab-panel">
+<div class="guide-wrap">
+
+  <!-- REGRAS GERAIS -->
+  <div class="guide-section">
+    <h2>⚙️ Guia de Mods — Do Iniciante ao Endgame</h2>
+    <p class="guide-intro">Mods definem 90% do poder do seu personagem. A arma mais cara sem mods perde para uma arma básica bem moddada. Nunca use Auto-Install — aprenda o porquê de cada mod. Gaste Endo apenas em mods que você vai usar por muito tempo. Rank 0 já ativa o efeito — rank máximo só quando tiver certeza que vai manter.</p>
+    <div class="mod-grid">
+      <div class="mod-card" style="border-left:3px solid var(--green)"><div class="mod-card-title">Regra #1 — Endo é valioso</div><div class="mod-card-desc">Rankear um mod até o máximo custa muito Endo. Priorize: Serration, Split Chamber, Vitality e os 4 stats de ability (Continuity, Streamline, Intensify, Stretch). Depois os Corrupted Mods.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Regra #2 — Polaridades importam</div><div class="mod-card-desc">Use Forma para adicionar polaridades ao equipamento e reduzir o custo dos mods. Um mod no slot com polaridade correta custa a metade. Não aplique Forma em arma que vai vender.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--accent)"><div class="mod-card-title">Regra #3 — Slots Exilus e Aura</div><div class="mod-card-desc">O slot Aura no Warframe gera capacidade extra de mods ao invés de consumir. O slot Exilus aceita mods utilitários (radar, velocidade, parkour). Sempre preencha ambos.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--purple)"><div class="mod-card-title">Regra #4 — Use warframe.market</div><div class="mod-card-desc">Antes de farmar qualquer mod raro, verifique o preço no warframe.market. Muitas vezes vale mais vender Prime Parts e comprar o mod por Platinum do que gastar horas farmando.</div></div>
+    </div>
+  </div>
+
+  <!-- NÍVEL 1: INICIANTE -->
+  <div class="guide-section">
+    <h2>🟢 Nível 1 — Iniciante (Star Chart / MR 0–8)</h2>
+    <p class="guide-intro">Esses são os mods que você deve conseguir e rankear primeiro. Sem eles, qualquer arma parece fraca independente de qual seja. Todos dropam de inimigos comuns ou são compráveis no Market por créditos.</p>
+
+    <h3>🛡️ Warframe — Sobrevivência base</h3>
+    <div class="mod-grid">
+      <div class="mod-card"><div class="mod-card-title">Vitality <span class="mod-tier tier-start">Prioridade #1</span></div><div class="mod-card-where">📍 Drop geral de inimigos / Market (créditos)</div><div class="mod-card-desc">+440% HP no rank 10. O mod mais importante do jogo inteiro. Todo Warframe usa sem exceção. Maxe antes de qualquer outro mod de survivabilidade.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Steel Fiber <span class="mod-tier tier-start">Iniciante</span></div><div class="mod-card-where">📍 Drop: inimigos Grineer (Earth+) / Market</div><div class="mod-card-desc">+110% armadura. Transforma armadura base em escudo real de dano. Prioridade em frames com armadura alta (Rhino, Inaros, Chroma, Atlas).</div></div>
+      <div class="mod-card"><div class="mod-card-title">Redirection <span class="mod-tier tier-start">Iniciante</span></div><div class="mod-card-where">📍 Dado automaticamente ao abrir o Arsenal</div><div class="mod-card-desc">+440% escudo. Use em frames com escudo alto (Mag, Hildryn, Volt). Em frames com escudo baixo, Vitality é melhor escolha.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Primed Vigor <span class="mod-tier tier-start">Login Dia 200+</span></div><div class="mod-card-where">📍 Daily Tribute (200, 400, 600 ou 900 dias de login)</div><div class="mod-card-desc">+220% HP e +220% escudo simultâneos. Alternativa ao Vitality para frames que querem os dois stats. Escolha entre Primed Vigor, Primed Fury ou Primed Shred no dia.</div></div>
+    </div>
+
+    <h3>⚡ Warframe — Habilidades base (os 4 stats fundamentais)</h3>
+    <div class="mod-grid">
+      <div class="mod-card"><div class="mod-card-title">Continuity <span class="mod-tier tier-start">Prioridade Alta</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+30% duração de habilidades. Afeta buffs, debuffs, invulnerabilidades e áreas de efeito com tempo. Presente em quase toda build.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Streamline <span class="mod-tier tier-start">Prioridade Alta</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+30% eficiência de energia. Reduz custo das habilidades. Com rank máximo + Flow você quase nunca fica sem energia no mid-game.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Intensify <span class="mod-tier tier-start">Prioridade Alta</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+30% força de habilidades. Aumenta dano, duração de efeitos, buffs e range de status. Essencial em qualquer frame que use habilidades para matar.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Stretch <span class="mod-tier tier-start">Prioridade Alta</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+45% range de habilidades. Habilidades de área afetam mais inimigos. Indispensável para Saryn, Nova, Vauban, Mag e qualquer frame de CC.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Flow <span class="mod-tier tier-start">Iniciante</span></div><div class="mod-card-where">📍 Drop geral de inimigos / Market</div><div class="mod-card-desc">+150% energia máxima. Você pode guardar mais energia para lançar mais habilidades seguidas. Par perfeito com Streamline.</div></div>
+    </div>
+
+    <h3>🔫 Primárias — Os 4 mods obrigatórios</h3>
+    <div class="mod-grid">
+      <div class="mod-card"><div class="mod-card-title">Serration <span class="mod-tier tier-start">Prioridade #1</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+165% dano de rifle no rank 10. Aplica-se antes de todos os outros multiplicadores. O primeiro mod a maxar em qualquer rifle. Sem ele sua arma faz 40% do dano que deveria.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Split Chamber <span class="mod-tier tier-start">Prioridade #2</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+90% multishot: cada tiro tem chance de disparar um projétil extra. Efetivamente dobra o DPS. O segundo mod a maxar. Combinado com Serration já transforma qualquer rifle.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Point Strike <span class="mod-tier tier-start">Crítico</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+150% chance crítica. Essencial para armas com crítico nativo alto (amarelo = 25%+, laranja = 50%+, vermelho = 100%+). Sempre verifique o crítico base da arma antes de colocar.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Vital Sense <span class="mod-tier tier-start">Crítico</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+120% multiplicador crítico. Par do Point Strike. Quanto maior o tier de crítico (amarelo→laranja→vermelho), maior o impacto desse mod.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Hellfire + Infected Clip <span class="mod-tier tier-start">Elemental</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">Juntos criam Heat + Toxin = Gas (cloud de AoE de Toxin). Separados: Heat sozinho reduz armadura em 50%. Use Heat como elemento principal no early game contra qualquer facção.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Stormbringer + Pathogen Rounds <span class="mod-tier tier-start">Elemental</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">Electric + Toxin = Viral. Viral dobra o dano que o inimigo recebe. Meta combo contra Grineer e Infested. Aprendam esse par — é o elemental mais útil do mid-game.</div></div>
+    </div>
+
+    <h3>🔫 Secundárias — Base obrigatória</h3>
+    <div class="mod-grid">
+      <div class="mod-card"><div class="mod-card-title">Hornet Strike <span class="mod-tier tier-start">Prioridade #1</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+220% dano de pistola. O Serration das secundárias. Sempre o primeiro a rankear. Sem ele qualquer pistola parece brinquedo.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Barrel Diffusion <span class="mod-tier tier-start">Prioridade #2</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+120% multishot. Equivalente do Split Chamber para pistolas. Par obrigatório do Hornet Strike.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Lethal Torrent <span class="mod-tier tier-start">Prioridade #3</span></div><div class="mod-card-where">📍 Drop: Cepheus (Uranus, Survival) / Market</div><div class="mod-card-desc">+60% multishot + 60% fire rate. Dobra o multishot disponível e acelera a cadência. Um dos melhores mods do jogo para secundárias de múltiplos projéteis.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Pistol Gambit + Target Cracker <span class="mod-tier tier-start">Crítico</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+120% chance crítica + +60% multiplicador. Par de crítico para pistolas, equivalentes ao Point Strike + Vital Sense. Essenciais para armas como Kuva Nukor e Catchmoon.</div></div>
+    </div>
+
+    <h3>⚔️ Melee — Base obrigatória</h3>
+    <div class="mod-grid">
+      <div class="mod-card"><div class="mod-card-title">Pressure Point <span class="mod-tier tier-start">Prioridade #1</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+165% dano base melee. O Serration do melee. Sempre o primeiro a rankear em qualquer arma corpo-a-corpo.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Fury <span class="mod-tier tier-start">Velocidade</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+30% velocidade de ataque. Mais ataques por segundo = mais dano total. Versão básica do Berserker Fury, use até conseguir o melhor.</div></div>
+      <div class="mod-card"><div class="mod-card-title">True Steel <span class="mod-tier tier-start">Crítico</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+60% chance crítica para melee. Substitui parcialmente o Blood Rush até você consegui-lo. Verifique o crítico base da arma antes de investir.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Organ Shatter <span class="mod-tier tier-start">Crítico</span></div><div class="mod-card-where">📍 Drop geral / Market (créditos)</div><div class="mod-card-desc">+90% multiplicador crítico melee. Par do True Steel/Blood Rush. Aumenta drasticamente o dano de golpes críticos.</div></div>
+    </div>
+
+    <h3>🌀 Aura Mods — Slot especial que gera capacidade extra</h3>
+    <div class="mod-grid">
+      <div class="mod-card"><div class="mod-card-title">Steel Charge <span class="mod-tier tier-start">Melhor para melee</span></div><div class="mod-card-where">📍 Nightwave (20 Creds) / Duviri Circuit Tier 1</div><div class="mod-card-desc">+60% dano melee para todo o time. Gera 18 de capacidade de mod (a maior de todas as auras com polarity V). Aura padrão para qualquer build de melee. Também excelente para Ash e Atlas.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Corrosive Projection <span class="mod-tier tier-start">Melhor geral</span></div><div class="mod-card-where">📍 Arbiters of Hexis (Syndicate) / Nightwave</div><div class="mod-card-desc">Reduz armadura dos inimigos em -18% (empilha com o time: 4x CP = 0% armadura no inimigo). Meta em conteúdo de alto nível e Steel Path. A aura mais usada em squads organizados.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Energy Siphon <span class="mod-tier tier-start">Caster frames</span></div><div class="mod-card-where">📍 Cephalon Suda / New Loka (Syndicate)</div><div class="mod-card-desc">+0.6 energia/segundo para todo o time. Regeneração de energia passiva transforma a gestão de energia em algo simples. Bom para Warframes de habilidades (Saryn, Nova, Ember).</div></div>
+      <div class="mod-card"><div class="mod-card-title">Growing Power <span class="mod-tier tier-start">Força de habilidades</span></div><div class="mod-card-where">📍 Cephalon Suda (Syndicate) / Arbiters</div><div class="mod-card-desc">+25% força de habilidades por 6s após aplicar status. Quase sempre ativo com armas de status. Alternativa ao Corrosive Projection para builds que precisam espremer força máxima.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Rifle Amp / Pistol Amp <span class="mod-tier tier-start">Dano de arma</span></div><div class="mod-card-where">📍 Drop de inimigos / Market (créditos)</div><div class="mod-card-desc">+27% dano de rifle/pistola para o time. Simples e eficiente. Bom para builds de dano puro quando não precisa de Corrosive Projection.</div></div>
+    </div>
+  </div>
+
+  <!-- NÍVEL 2: INTERMEDIÁRIO -->
+  <div class="guide-section">
+    <h2>🔵 Nível 2 — Intermediário (Após The War Within / MR 8–15)</h2>
+    <p class="guide-intro">Aqui a progressão começa a se ramificar. Os Corrupted Mods dos Orokin Vaults (Deimos) são o maior salto de poder disponível nesta fase. Esses mods definem as builds de mid e endgame — priorize farmá-los assim que tiver acesso ao Dojo.</p>
+
+    <h3>💀 Corrupted Mods — Orokin Vaults (Deimos) — Prioridade máxima</h3>
+    <p class="guide-intro" style="margin-bottom:.75rem">Obtidos abrindo Orokin Vaults no Deimos com Dragon Keys (craftados no Dojo). Cada vault dá um mod aleatório dos 24 disponíveis. Farme em grupo: cada membro leva uma chave diferente para cobrir todas as possibilidades.</p>
+    <div class="mod-grid">
+      <div class="mod-card" style="border-left:3px solid var(--red)"><div class="mod-card-title">Fleeting Expertise <span class="mod-tier tier-mid">Farm ASAP</span></div><div class="mod-card-where">📍 Orokin Vault — Deimos (4.17% por abertura)</div><div class="mod-card-desc">+60% eficiência / -60% duração. O maior buff de eficiência do jogo. Use sempre com Narrow Minded para compensar a penalidade de duração. Essencial em 80% das builds de endgame.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--red)"><div class="mod-card-title">Narrow Minded <span class="mod-tier tier-mid">Farm ASAP</span></div><div class="mod-card-where">📍 Orokin Vault — Deimos (4.17% por abertura)</div><div class="mod-card-desc">+99% duração / -66% range. Compensa totalmente a penalidade de duração do Fleeting. Par inseparável. Com os dois você tem eficiência máxima sem perder duração.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--red)"><div class="mod-card-title">Blind Rage <span class="mod-tier tier-mid">Farm ASAP</span></div><div class="mod-card-where">📍 Orokin Vault — Deimos (4.17% por abertura)</div><div class="mod-card-desc">+99% força / -55% eficiência. O maior buff de força do jogo. Compense a eficiência com Fleeting + Streamline. Presente em toda build que quer dano de habilidades escalável.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--orange)"><div class="mod-card-title">Transient Fortitude <span class="mod-tier tier-mid">Alternativo</span></div><div class="mod-card-where">📍 Orokin Vault — Deimos (4.17% por abertura)</div><div class="mod-card-desc">+55% força / -27.5% duração. Alternativa mais equilibrada ao Blind Rage. Menos força mas penalidade mais leve. Use quando a duração importa muito para a build.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--orange)"><div class="mod-card-title">Overextended <span class="mod-tier tier-mid">CC Builds</span></div><div class="mod-card-where">📍 Orokin Vault — Deimos (4.17% por abertura)</div><div class="mod-card-desc">+90% range / -60% força. Para frames cujo poder está no alcance, não no dano (Nova, Mag, Vauban, Limbo). Você abre mão de força para cobrir áreas enormes com CC.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--text3)"><div class="mod-card-title">Outros Corrupted (armas) <span class="mod-tier tier-mid">Intermediário</span></div><div class="mod-card-where">📍 Orokin Vault — Deimos</div><div class="mod-card-desc">Critical Delay (+48% crit / -36% fire rate), Hammer Shot (++80% crit mult / +40% status), Magnum Force (+66% dano / -22% precisão). Consulte builds específicas antes de investir Endo nesses.</div></div>
+    </div>
+
+    <h3>🔫 Primárias — Intermediário</h3>
+    <div class="mod-grid">
+      <div class="mod-card"><div class="mod-card-title">Hunter Munitions <span class="mod-tier tier-mid">Meta builds</span></div><div class="mod-card-where">📍 Caza (Defesa) / Trade</div><div class="mod-card-desc">30% de chance de aplicar Slash em golpes críticos. Slash ignora armadura. Revoluciona qualquer arma de crítico alto contra Grineer e Steel Path. Um dos mods mais valiosos do jogo.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Vigilante Armaments <span class="mod-tier tier-mid">Multishot</span></div><div class="mod-card-where">📍 Bounties T1/T2 em Cetus (Plains of Eidolon)</div><div class="mod-card-desc">+60% multishot para rifles. Parte do set Vigilante — bônus de set adicional: chance de uptiering de críticos (amarelo→laranja→vermelho). Dropa nos bounties iniciais de Cetus.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Primed Shred <span class="mod-tier tier-mid">Login Dia 400+</span></div><div class="mod-card-where">📍 Daily Tribute (400, 600 ou 900 dias)</div><div class="mod-card-desc">+55% fire rate + +55% penetração. Essencial para armas automáticas e rifles com projéteis que atravessam. Grátis por login consistente.</div></div>
+    </div>
+
+    <h3>⚔️ Melee — Intermediário (as peças que definem builds)</h3>
+    <div class="mod-grid">
+      <div class="mod-card" style="border-left:3px solid var(--red)"><div class="mod-card-title">Blood Rush <span class="mod-tier tier-mid">Meta absoluto</span></div><div class="mod-card-where">📍 Caza (Defesa escalonada) / Arbitration / Trade</div><div class="mod-card-desc">+60% chance crítica por nível do Combo Counter. Com combo x3 você já tem +180% crit. O mod mais importante de melee — transforma qualquer arma em máquina de críticos. Presente em 90% das builds.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--red)"><div class="mod-card-title">Condition Overload <span class="mod-tier tier-mid">Meta absoluto</span></div><div class="mod-card-where">📍 Rathuum (Arena, Sedna) / Trade</div><div class="mod-card-desc">+120% dano por tipo de status diferente aplicado no alvo. Com 3 status diferentes no inimigo você tem +360% dano extra multiplicativo. O outro pilar do meta de melee. Use com armas de status.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--orange)"><div class="mod-card-title">Weeping Wounds <span class="mod-tier tier-mid">Status builds</span></div><div class="mod-card-where">📍 Caza (Defesa escalonada) / Arbitration</div><div class="mod-card-desc">+40% chance de status por nível do Combo Counter. Par do Blood Rush para builds de status. Com combo x3 e Weeping Wounds, praticamente todo golpe aplica status. Essencial para builds de Condition Overload.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Berserker Fury <span class="mod-tier tier-mid">Velocidade</span></div><div class="mod-card-where">📍 Caza (Defesa escalonada) / Trade</div><div class="mod-card-desc">+75% velocidade de ataque por 20s em golpes críticos. Substitui o Fury básico. Escalona naturalmente com Blood Rush — quanto mais crítico, mais velocidade.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Primed Reach <span class="mod-tier tier-mid">Baro Ki'Teer</span></div><div class="mod-card-where">📍 Baro Ki'Teer (Void Trader) — Ducats</div><div class="mod-card-desc">+165% range de melee (vs +45% do normal). Para armas com range alto (foice, lança, glaive) se torna devastador em área. Essencial para builds de Slam Attack e área.</div></div>
+    </div>
+
+    <h3>🔫 Secundárias — Intermediário</h3>
+    <div class="mod-grid">
+      <div class="mod-card"><div class="mod-card-title">Primed Pistol Gambit <span class="mod-tier tier-mid">Baro Ki'Teer</span></div><div class="mod-card-where">📍 Baro Ki'Teer (Void Trader) — Ducats</div><div class="mod-card-desc">+187% chance crítica (vs +120% normal). Upgrade massivo do Pistol Gambit. Essencial para Kuva Nukor, Laetum e qualquer pistola de crítico alto. Vale cada Ducat.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Primed Target Cracker <span class="mod-tier tier-mid">Baro Ki'Teer</span></div><div class="mod-card-where">📍 Baro Ki'Teer (Void Trader) — Ducats</div><div class="mod-card-desc">+135% multiplicador crítico (vs +60% normal). Par do Primed Pistol Gambit. Juntos são os mods de crítico mais fortes para pistolas no jogo.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Galvanized Diffusion <span class="mod-tier tier-mid">Arbitration</span></div><div class="mod-card-where">📍 Arbitration (Vitus Essence)</div><div class="mod-card-desc">+120% multishot base + escalona com kills. Substitui Barrel Diffusion no endgame. Prioridade após conseguir as Galvanized primárias.</div></div>
+    </div>
+  </div>
+
+  <!-- NÍVEL 3: AVANÇADO -->
+  <div class="guide-section">
+    <h2>🔴 Nível 3 — Avançado / Endgame (Steel Path / MR 15+)</h2>
+    <p class="guide-intro">Esses mods exigem conteúdo avançado para obter. São o topo da hierarquia de poder — cada um representa um salto significativo em relação aos equivalentes normais. Priorize na ordem apresentada.</p>
+
+    <h3>✨ Mods Umbral — The Sacrifice (quest gratuita)</h3>
+    <div class="mod-grid">
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Umbral Vitality <span class="mod-tier tier-end">Free (Quest)</span></div><div class="mod-card-where">📍 Recompensa de The Sacrifice</div><div class="mod-card-desc">+770% HP (vs +440% do normal). O maior buff de HP do jogo. Sinergia Umbral: equipar 2+ mods Umbral juntos aumenta o bônus em 25%. Sempre use com Umbral Intensify.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Umbral Intensify <span class="mod-tier tier-end">Free (Quest)</span></div><div class="mod-card-where">📍 Recompensa de The Sacrifice</div><div class="mod-card-desc">+77% força de habilidades (vs +30% normal). Com sinergia Umbral (+2 mods Umbral) sobe para 100%+. Presente em qualquer build que usa habilidades para dano ou buff.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Umbral Fiber <span class="mod-tier tier-end">Free (Quest)</span></div><div class="mod-card-where">📍 Recompensa de The Sacrifice</div><div class="mod-card-desc">+275% armadura (vs +110% do normal). Extremamente poderoso com a sinergia Umbral ativa. Essencial para frames tanque (Inaros, Rhino, Atlas, Nidus).</div></div>
+    </div>
+
+    <h3>⚡ Galvanized Mods — Arbitration (Vitus Essence)</h3>
+    <p class="guide-intro" style="margin-bottom:.75rem">Comprados com Vitus Essence no árbitro em qualquer Relay após completar o Star Chart. São upgrades diretos dos mods padrão com bônus escalável em kills — essenciais para endgame.</p>
+    <div class="mod-grid">
+      <div class="mod-card"><div class="mod-card-title">Galvanized Chamber <span class="mod-tier tier-end">Primárias</span></div><div class="mod-card-where">📍 Arbitration — Vitus Essence</div><div class="mod-card-desc">+80% multishot + empilha até +60% por kill por 20s (x5). Substitui completamente o Split Chamber em qualquer build de endgame. Prioridade máxima entre os Galvanized.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Galvanized Aptitude <span class="mod-tier tier-end">Primárias</span></div><div class="mod-card-where">📍 Arbitration — Vitus Essence</div><div class="mod-card-desc">+80% chance de status base + empilha dano direto por tipo de status no alvo em kills. Substitui mods de status fixos. Essencial para builds de status de alto nível.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Galvanized Scope <span class="mod-tier tier-end">Snipers</span></div><div class="mod-card-where">📍 Arbitration — Vitus Essence</div><div class="mod-card-desc">+120% crit chance ao mirar + empilha em headshots. Para snipers (Rubico, Lanka, Vectis). Absolutamente essencial em qualquer build de sniper de endgame.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Galvanized Shot <span class="mod-tier tier-end">Secundárias</span></div><div class="mod-card-where">📍 Arbitration — Vitus Essence</div><div class="mod-card-desc">Dano direto escalável por status aplicado. Par da Galvanized Diffusion para secundárias de status. Essencial para Kuva Nukor e Catchmoon.</div></div>
+    </div>
+
+    <h3>🔱 Archon Mods — Kahl's Garrison (pós Veilbreaker)</h3>
+    <p class="guide-intro" style="margin-bottom:.75rem">Comprados com Stock no Chipper do Kahl's Garrison — requer Rank 3 com a Garrison. São versões aprimoradas dos mods de habilidade com efeito adicional de sinergia de elemento. Cada um custa 40 Stock (missões semanais do Kahl).</p>
+    <div class="mod-grid">
+      <div class="mod-card" style="border-left:3px solid var(--purple)"><div class="mod-card-title">Archon Vitality <span class="mod-tier tier-end">Kahl's Garrison</span></div><div class="mod-card-where">📍 Chipper — 40 Stock (Rank 3)</div><div class="mod-card-desc">+440% HP (igual Vitality) + habilidades que causam Heat aplicam um proc extra de Heat. Sinergia com Ember, Chroma, Hildryn com Blazing Pillage e qualquer frame de fogo.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--purple)"><div class="mod-card-title">Archon Stretch <span class="mod-tier tier-end">Kahl's Garrison</span></div><div class="mod-card-where">📍 Chipper — 40 Stock (Rank 3)</div><div class="mod-card-desc">+45% range + habilidades de Electricity regeneram 2 energia/segundo por 5s. Excelente com Gyre, Volt, Wisp (Shock Mote). Pode ser deixado unranked — efeito de energia não escala com rank.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--purple)"><div class="mod-card-title">Archon Intensify <span class="mod-tier tier-end">Kahl's Garrison</span></div><div class="mod-card-where">📍 Chipper — 40 Stock (Rank 3)</div><div class="mod-card-desc">+30% força + habilidades de cura aplicam +30% força extra por 5s. Com frames que se curam constantemente (Inaros, Nidus, Garuda) essa força extra é quase permanente.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--purple)"><div class="mod-card-title">Archon Flow <span class="mod-tier tier-end">Kahl's Garrison</span></div><div class="mod-card-where">📍 Chipper — 40 Stock (Rank 3)</div><div class="mod-card-desc">+150% energia máxima + habilidades de Cold geram 150 de energia. Excelente com Frost, Cyte-09 e frames com habilidades de frio via Helminth.</div></div>
+    </div>
+
+    <h3>👑 Primed Mods — Baro Ki'Teer (Void Trader)</h3>
+    <p class="guide-intro" style="margin-bottom:.75rem">Baro aparece a cada 2 semanas em um Relay diferente, trazendo Primed Mods compráveis com Ducats (Prime Parts descartáveis) + Créditos. Guarde Ducats para quando ele aparecer com os mods abaixo. Verifique baroitinerary.com para saber quando chega.</p>
+    <div class="mod-grid">
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Primed Continuity <span class="mod-tier tier-end">Alta prioridade</span></div><div class="mod-card-where">📍 Baro Ki'Teer — ~300 Ducats</div><div class="mod-card-desc">+55% duração (vs +30% normal). Substitui o Continuity em praticamente toda build. Duração afeta quase tudo no jogo.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Primed Flow <span class="mod-tier tier-end">Alta prioridade</span></div><div class="mod-card-where">📍 Baro Ki'Teer — ~350 Ducats</div><div class="mod-card-desc">+275% energia máxima (vs +150%). Permite guardar energia suficiente para múltiplas habilidades pesadas. Essencial para frames de alta demanda de energia.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Primed Pressure Point <span class="mod-tier tier-end">Melee</span></div><div class="mod-card-where">📍 Baro Ki'Teer — ~300 Ducats</div><div class="mod-card-desc">+165% dano base melee mas com rank 10 (vs rank 5). Substitui o Pressure Point. O custo é o mesmo do normal em termos de capacidade mas o bônus é muito maior por rank.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Primed Pistol Gambit <span class="mod-tier tier-end">Secundárias</span></div><div class="mod-card-where">📍 Baro Ki'Teer — ~300 Ducats</div><div class="mod-card-desc">+187% chance crítica de pistola. Substitui Pistol Gambit em toda build de crit de secundária.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Primed Target Cracker <span class="mod-tier tier-end">Secundárias</span></div><div class="mod-card-where">📍 Baro Ki'Teer — ~300 Ducats</div><div class="mod-card-desc">+135% multiplicador de crit de pistola. Par do Primed Pistol Gambit. Os dois juntos são os mods de crítico de pistola mais fortes do jogo.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Primed Heated Charge <span class="mod-tier tier-end">Secundárias</span></div><div class="mod-card-where">📍 Baro Ki'Teer — ~200 Ducats</div><div class="mod-card-desc">+165% dano de Heat para pistolas. Alta prioridade porque Heat é o melhor elemento singular para status (reduz armadura em 50%). Muitas builds de secundária rodam em Heat.</div></div>
+    </div>
+
+    <h3>🛡️ Sobrevivência Avançada</h3>
+    <div class="mod-grid">
+      <div class="mod-card" style="border-left:3px solid var(--red)"><div class="mod-card-title">Adaptation <span class="mod-tier tier-end">Alta prioridade</span></div><div class="mod-card-where">📍 Arbitration (drop direto) / Trade</div><div class="mod-card-desc">Cada tipo de dano recebido gera resistência crescente àquele tipo (até 90%). Stacks rapidamente em combate. Um dos melhores mods de survivabilidade do jogo — presente em quase todo build de endgame.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Brief Respite <span class="mod-tier tier-end">Shield Gate</span></div><div class="mod-card-where">📍 Cephalon Suda (Syndicate)</div><div class="mod-card-desc">Habilidades regeneram escudo. Parte do meta de Shield Gating — frames com escudo alto praticamente não tomam dano de HP se o escudo estiver ativo. Essencial para builds de shield gate.</div></div>
+      <div class="mod-card"><div class="mod-card-title">Primed Sure Footed <span class="mod-tier tier-end">Login Dia 600+</span></div><div class="mod-card-where">📍 Daily Tribute (600 ou 900 dias)</div><div class="mod-card-desc">Imunidade a knockdown. Em Steel Path e endgame, ser derrubado constantemente é fatal. Exilus slot compatível — não ocupa slot normal. Obrigatório para conteúdo de alto nível.</div></div>
+    </div>
+  </div>
+
+  <!-- ELEMENTOS GUIA -->
+  <div class="guide-section">
+    <h2>🧪 Guia de Elementos — Qual usar e contra quem</h2>
+    <p class="guide-intro">Elementos no Warframe combinam em pares e o resultado é um elemento composto diferente. A ordem em que você coloca os mods no slot define qual combo é criado. Saiba qual elemento usar contra cada facção.</p>
+    <div class="mod-grid">
+      <div class="mod-card" style="border-left:3px solid var(--purple)"><div class="mod-card-title">Viral (Toxin + Cold) — Meta universal</div><div class="mod-card-where">Pathogen Rounds + Deep Freeze / Rime Rounds</div><div class="mod-card-desc">Dobra o dano recebido pelo inimigo (debuff de HP até 325% a 10 stacks). Meta contra quase tudo. Combine com Heat para também reduzir armadura. A combo mais usada no jogo inteiro.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--orange)"><div class="mod-card-title">Corrosive (Electric + Toxin) — Anti-armadura</div><div class="mod-card-where">Stormbringer + Pathogen Rounds</div><div class="mod-card-desc">Remove armadura permanentemente em stacks. Com 10 stacks: -80% de armadura do alvo. Excelente em Steel Path contra Grineer pesados e Ferrite armor. Combine com Slash para máximo dano.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--red)"><div class="mod-card-title">Heat (sozinho) — Anti-armadura moderado</div><div class="mod-card-where">Hellfire / Volcanic Edge / Scorch</div><div class="mod-card-desc">Reduz armadura do inimigo em 50% por proc. Muito mais fácil de conseguir que Corrosive. Combina perfeitamente com Viral (Viral+Heat = o duo mais popular do jogo). Funciona contra todas as facções.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--accent)"><div class="mod-card-title">Radiation (Heat + Electric) — Corpus endgame e Eidolons</div><div class="mod-card-where">Hellfire + Stormbringer</div><div class="mod-card-desc">Faz inimigos atacarem uns aos outros (Confusion proc). Dano bônus contra Alloy Armor (Corpus robóticos de alto nível) e Eidolons. Obrigatório para caçadas de Eidolon.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--green)"><div class="mod-card-title">Magnetic (Cold + Electric) — Anti-Corpus</div><div class="mod-card-where">Deep Freeze + Stormbringer</div><div class="mod-card-desc">+75% dano contra escudo. Destroça Corpus com escudo alto. Combine com Toxin (que passa direto pelo escudo) para combo dupla letal contra Corpus.</div></div>
+      <div class="mod-card" style="border-left:3px solid var(--gold)"><div class="mod-card-title">Slash (inerente) — Ignora armadura</div><div class="mod-card-where">Hunter Munitions (em críticos) / Weeping Wounds</div><div class="mod-card-desc">Proc de Slash aplica sangramento que ignora completamente armadura. Por isso Hunter Munitions é tão poderoso — ele converte críticos em dano verdadeiro que passa pela armadura do Steel Path.</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════ ARMAS ═══════════════════ -->
+<div id="tab-armas" class="tab-panel">
+<style>
+/* ── ARMAS SECTION ── */
+.armas-wrap{max-width:960px;margin:0 auto;padding:1.5rem 2rem 4rem;}
+.armas-intro{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:2rem;}
+.armas-intro strong{color:var(--gold2);}
+
+/* Phase selector */
+.phase-tabs{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap;}
+.phase-tab{
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:8px 22px;cursor:pointer;
+  background:rgba(10,20,34,.7);
+  border:1px solid var(--border);
+  color:var(--text3);
+  clip-path:polygon(10px 0%,100% 0%,100% calc(100% - 10px),calc(100% - 10px) 100%,0% 100%,0% 10px);
+  transition:all .2s;position:relative;
+}
+.phase-tab:hover{color:var(--text2);border-color:var(--border2);}
+.phase-tab.active-early{background:rgba(53,168,110,.1);border-color:rgba(53,168,110,.35);color:var(--green);box-shadow:0 0 16px rgba(53,168,110,.1);}
+.phase-tab.active-mid{background:rgba(58,114,200,.1);border-color:rgba(58,114,200,.35);color:var(--blue);box-shadow:0 0 16px rgba(58,114,200,.1);}
+.phase-tab.active-late{background:rgba(125,95,200,.1);border-color:rgba(125,95,200,.35);color:var(--purple);box-shadow:0 0 16px rgba(125,95,200,.1);}
+.phase-tab.active-end{background:rgba(201,151,46,.1);border-color:rgba(201,151,46,.35);color:var(--gold2);box-shadow:0 0 16px rgba(201,151,46,.12);}
+
+/* Category tabs */
+.cat-tabs{display:flex;gap:4px;margin-bottom:1.5rem;}
+.cat-tab{
+  font-family:'Rajdhani',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  padding:5px 16px;cursor:pointer;
+  background:transparent;border:1px solid var(--border);color:var(--text3);
+  transition:all .15s;
+}
+.cat-tab:hover{color:var(--text2);border-color:var(--border2);}
+.cat-tab.active{background:rgba(92,200,240,.08);border-color:rgba(92,200,240,.25);color:var(--accent);}
+
+/* Carousel header */
+.carousel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1rem;padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.carousel-header::after{
+  content:'';position:absolute;bottom:-1px;left:0;width:50px;height:1px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.carousel-title{
+  font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;
+  color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;
+}
+.carousel-nav{display:flex;align-items:center;gap:10px;}
+.carr-btn{
+  width:30px;height:30px;
+  border:1px solid var(--border2);
+  background:rgba(10,20,34,.8);
+  color:var(--text2);cursor:pointer;
+  font-size:14px;
+  clip-path:polygon(6px 0%,100% 0%,100% calc(100% - 6px),calc(100% - 6px) 100%,0% 100%,0% 6px);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.carr-btn:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 0 10px rgba(201,151,46,.15);}
+.carr-btn:disabled{opacity:.25;cursor:not-allowed;}
+.carr-counter{
+  font-family:'Rajdhani',sans-serif;
+  font-size:12px;color:var(--text3);min-width:52px;text-align:center;letter-spacing:1px;
+}
+
+/* Cards grid */
+.cards-track{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+@media(max-width:700px){.cards-track{grid-template-columns:1fr 1fr;}}
+@media(max-width:440px){.cards-track{grid-template-columns:1fr;}}
+
+/* Weapon card */
+.wcard{
+  background:linear-gradient(150deg,rgba(12,22,38,.95),rgba(7,12,22,.98));
+  border:1px solid var(--border);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%);
+  padding:16px;cursor:pointer;
+  transition:border-color .25s,transform .2s,box-shadow .25s;
+  position:relative;overflow:hidden;
+}
+/* Linha de cor no topo por fase */
+.wcard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  transition:opacity .2s;
+}
+/* Canto decorativo inferior direito */
+.wcard::after{
+  content:'';position:absolute;
+  bottom:16px;right:0;
+  width:16px;height:16px;
+  border-left:1px solid var(--border);
+  border-top:1px solid var(--border);
+  transform:rotate(180deg);
+  pointer-events:none;
+  transition:border-color .25s;
+}
+.wcard:hover{
+  border-color:var(--border2);
+  transform:translateY(-3px);
+}
+.wcard:hover::after{border-color:var(--border2);}
+.wcard.early::before{background:linear-gradient(90deg,var(--green),transparent);}
+.wcard.mid::before{background:linear-gradient(90deg,var(--blue),transparent);}
+.wcard.late::before{background:linear-gradient(90deg,var(--purple),transparent);}
+.wcard.endg::before{background:linear-gradient(90deg,var(--gold),transparent);}
+.wcard.early:hover{box-shadow:0 6px 24px rgba(53,168,110,.08),0 0 0 1px rgba(53,168,110,.15);}
+.wcard.mid:hover{box-shadow:0 6px 24px rgba(58,114,200,.08),0 0 0 1px rgba(58,114,200,.15);}
+.wcard.late:hover{box-shadow:0 6px 24px rgba(125,95,200,.08),0 0 0 1px rgba(125,95,200,.15);}
+.wcard.endg:hover{box-shadow:0 6px 24px rgba(201,151,46,.1),0 0 0 1px rgba(201,151,46,.2);}
+
+.wcard-rank{
+  font-family:'Rajdhani',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.wcard-rank::after{content:'';flex:1;height:1px;background:var(--border);}
+.wcard-rank.early{color:var(--green);}
+.wcard-rank.mid{color:var(--blue);}
+.wcard-rank.late{color:var(--purple);}
+.wcard-rank.endg{color:var(--gold2);}
+
+.wcard-icon{height:40px;margin-bottom:12px;display:flex;align-items:center;}
+.wcard-icon svg{display:block;filter:drop-shadow(0 0 6px rgba(92,200,240,.2));}
+.wcard-name{
+  font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;
+  color:#e8f4ff;margin-bottom:2px;letter-spacing:.5px;line-height:1.1;
+}
+.wcard-type{
+  font-size:9px;color:var(--text3);letter-spacing:1.5px;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.wcard-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+.wcard-tag{
+  font-size:9px;padding:1px 7px;font-weight:700;letter-spacing:.5px;
+  clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);
+}
+.tag-mr{background:rgba(201,151,46,.12);color:var(--gold);border:1px solid rgba(201,151,46,.22);}
+.tag-how{background:rgba(92,200,240,.08);color:var(--accent);border:1px solid rgba(92,200,240,.15);font-size:9px;}
+.wcard-desc{font-size:11px;color:var(--text2);line-height:1.55;}
+.wcard-hint{
+  font-size:10px;color:var(--text3);margin-top:12px;padding-top:10px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:5px;letter-spacing:.3px;
+}
+.wcard-hint::before{content:'◆';font-size:7px;color:var(--gold);opacity:.6;}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:rgba(3,6,12,.92);backdrop-filter:blur(10px);
+  align-items:center;justify-content:center;padding:1rem;
+  animation:fadeIn .2s ease;
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:linear-gradient(150deg,#09162a,#0c1e38);
+  border:1px solid var(--border2);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);
+  width:100%;max-width:700px;max-height:90vh;overflow-y:auto;
+  position:relative;
+  animation:slideUp .25s ease;
+  box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 1px rgba(201,151,46,.1);
+}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-top{
+  padding:22px 22px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:16px;
+  position:sticky;top:0;
+  background:linear-gradient(150deg,#09162a,#0c1e38);
+  z-index:2;
+}
+.modal-top::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,var(--gold),transparent 60%);
+}
+.modal-icon{
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  width:56px;height:46px;
+}
+.modal-icon svg{
+  display:block;
+  filter:drop-shadow(0 0 10px rgba(92,200,240,.3));
+}
+.modal-meta{flex:1;}
+.modal-name{
+  font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;
+  color:#fff;letter-spacing:1.5px;line-height:1.1;
+  text-shadow:0 0 30px rgba(92,200,240,.15);
+}
+.modal-sub{font-size:11px;color:var(--text3);margin-top:4px;letter-spacing:.3px;}
+.modal-close{
+  width:28px;height:28px;
+  border:1px solid var(--border);
+  background:none;color:var(--text3);cursor:pointer;font-size:16px;
+  clip-path:polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:border-color .15s,color .15s;
+}
+.modal-close:hover{border-color:var(--red);color:var(--red);}
+.modal-body{padding:22px;}
+.modal-section-title{
+  font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;
+  color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;
+  margin:0 0 12px;display:flex;align-items:center;gap:8px;
+}
+.modal-section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+.modal-desc{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:20px;}
+.modal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;}
+.modal-stat{
+  background:rgba(10,20,34,.8);
+  border:1px solid var(--border);
+  clip-path:polygon(6px 0%,100% 0%,100% calc(100% - 6px),calc(100% - 6px) 100%,0% 100%,0% 6px);
+  padding:10px;text-align:center;
+}
+.modal-stat-label{font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;}
+.modal-stat-val{
+  font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;
+  color:var(--accent);margin-top:3px;
+  text-shadow:0 0 16px rgba(92,200,240,.3);
+}
+.build-grid{display:flex;flex-direction:column;gap:5px;margin-bottom:20px;}
+.build-mod{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(10,20,34,.7);
+  border:1px solid var(--border);
+  border-left:2px solid var(--border2);
+  padding:9px 14px;
+  transition:border-color .15s;
+}
+.build-mod:hover{border-color:var(--border2);border-left-color:var(--gold);}
+.build-mod-num{
+  font-family:'Rajdhani',sans-serif;font-size:11px;
+  color:var(--text3);width:16px;flex-shrink:0;letter-spacing:.5px;
+}
+.build-mod-name{font-size:12px;font-weight:600;color:#ddeeff;flex:1;letter-spacing:.2px;}
+.build-mod-why{font-size:11px;color:var(--text3);text-align:right;}
+.build-note{
+  background:rgba(201,151,46,.06);
+  border:1px solid rgba(201,151,46,.15);
+  border-left:2px solid var(--gold);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);
+  padding:12px 16px;font-size:12px;color:var(--text2);line-height:1.6;
+}
+.how-get{
+  background:rgba(92,200,240,.05);
+  border:1px solid rgba(92,200,240,.12);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);
+  padding:12px 16px;font-size:12px;color:var(--text2);line-height:1.5;margin-top:12px;
+}
+.how-get strong{color:var(--accent);}
+</style>
+
+<div class="armas-wrap">
+  <h2 style="font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:#ddeeff;letter-spacing:2px;text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:1.5rem;position:relative;display:flex;align-items:center;gap:10px;">
+    <span style="width:3px;height:18px;background:linear-gradient(to bottom,var(--gold),var(--accent));display:inline-block;flex-shrink:0;"></span>
+    Top 10 Armas por Fase
+    <span style="position:absolute;bottom:-1px;left:0;width:80px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+  </h2>
+  <p class="armas-intro">
+    Clique em qualquer card para ver a <strong>build mais popular</strong> da arma.
+    Sempre leve qualquer arma ao <strong>Rank 30 antes de vender</strong> — o MR XP é concedido somente uma vez.
+    Uma arma mediana bem moddada supera qualquer arma top sem mods.
+  </p>
+
+  <div class="phase-tabs">
+    <button class="phase-tab active-early" onclick="setPhase('early',this)">Early Game</button>
+    <button class="phase-tab" onclick="setPhase('mid',this)">Mid Game</button>
+    <button class="phase-tab" onclick="setPhase('late',this)">Late Game</button>
+    <button class="phase-tab" onclick="setPhase('end',this)">Endgame</button>
+  </div>
+
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="setCat('all',this)">Todas</button>
+    <button class="cat-tab" onclick="setCat('primary',this)">Primárias</button>
+    <button class="cat-tab" onclick="setCat('secondary',this)">Secundárias</button>
+    <button class="cat-tab" onclick="setCat('melee',this)">Melee</button>
+  </div>
+
+  <div class="carousel-header">
+    <div class="carousel-title" id="carr-title">Early Game — Top 10</div>
+    <div class="carousel-nav">
+      <button class="carr-btn" id="carr-prev" onclick="carrNav(-1)">&#8592;</button>
+      <span class="carr-counter" id="carr-counter">1–3 / 10</span>
+      <button class="carr-btn" id="carr-next" onclick="carrNav(1)">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="cards-track" id="cards-track"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-top">
+      <div class="modal-icon" id="m-icon"></div>
+      <div class="modal-meta">
+        <div class="modal-name" id="m-name"></div>
+        <div class="modal-sub" id="m-sub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+const WEAPONS = {
+  early:[
+    {id:"boltor",   name:"Boltor",         type:"Rifle Primário",       cat:"primary",   mr:"MR 2",  how:"Market — 25k créditos",
+     rank:"early",  tags:["Puncture","Auto"],
+     desc:"Rifle automático que dispara parafusos perfurantes. Acessível logo no início, ensina a mecânica de perfuração (Puncture) e tem dois upgrades futuros excelentes: Boltor Prime e Telos Boltor com Incarnon.",
+     stats:{crit:"10%", status:"22%", fire:"8.75/s"},
+     build:[
+       {name:"Serration",      why:"Dano base +165% — sempre o primeiro"},
+       {name:"Split Chamber",  why:"Multishot +90% — dobra o DPS efetivo"},
+       {name:"Point Strike",   why:"Crítico +150%"},
+       {name:"Vital Sense",    why:"+120% multiplicador crítico"},
+       {name:"Hellfire",       why:"Heat — reduz armadura em 50%"},
+       {name:"Infected Clip",  why:"Toxin para combo Viral ou Gas"},
+       {name:"Stormbringer",   why:"Electric para Viral com Infected Clip"},
+       {name:"Speed Trigger",  why:"Fire rate extra"}
+     ],
+     note:"Com Serration e Split Chamber maxados o Boltor despacha o Star Chart inteiro. Não gaste Catalyst aqui — guarde para o Boltor Prime."
+    },
+    {id:"hek",      name:"Hek",            type:"Shotgun Primário",     cat:"primary",   mr:"MR 4",  how:"Market — 25k créditos",
+     rank:"early",  tags:["Burst","Shotgun"],
+     desc:"Shotgun Grineer de alto dano de burst. Excelente para single-target e até bosses. Tem range surpreendente para uma shotgun. Evolui para Vaykor Hek via Syndicate (Steel Meridian).",
+     stats:{crit:"17%", status:"13%", fire:"1.08/s"},
+     build:[
+       {name:"Point Blank",      why:"Dano de shotgun +90%"},
+       {name:"Hell's Chamber",   why:"Multishot +120%"},
+       {name:"Chilling Grasp",   why:"Cold para Viral"},
+       {name:"Contagious Spread",why:"Toxin — Toxin+Cold = Viral"},
+       {name:"Ravage",           why:"+60% multiplicador crítico de shotgun"},
+       {name:"Blaze",            why:"+60% dano base + Heat"},
+       {name:"Accelerated Blast",why:"Fire rate + Puncture"},
+       {name:"Scattering Inferno",why:"Fire rate + Heat extra"}
+     ],
+     note:"Com Hell's Chamber e Point Blank maxados o Hek mata qualquer elite até Jupiter sem dificuldade."
+    },
+    {id:"xoris",    name:"Xoris",          type:"Glaive Melee",         cat:"melee",     mr:"MR 0",  how:"Quest: The Deadlock Protocol",
+     rank:"early",  tags:["Glaive","AoE","Free"],
+     desc:"Glaive dado grátis ao completar The Deadlock Protocol. Mantém o Combo Counter infinito — mecânica única que o torna excelente para qualquer frame que escala com combo (Mesa, Saryn, Ash).",
+     stats:{crit:"18%", status:"18%", range:"2.0m"},
+     build:[
+       {name:"Pressure Point",     why:"Dano base +165%"},
+       {name:"Blood Rush",         why:"Crit escala com Combo Counter"},
+       {name:"Weeping Wounds",     why:"Status escala com Combo"},
+       {name:"Condition Overload", why:"+120% dano por status no alvo"},
+       {name:"Organ Shatter",      why:"+90% multiplicador crítico"},
+       {name:"Berserker Fury",     why:"Velocidade de ataque em crits"},
+       {name:"Volcanic Edge",      why:"Heat — reduz armadura"},
+       {name:"Virulent Scourge",   why:"Toxin para Viral"}
+     ],
+     note:"O Combo Counter infinito do Xoris mantém Blood Rush e Weeping Wounds sempre no máximo. Arremesse e chame de volta para dano AoE."
+    },
+    {id:"atomos",   name:"Atomos",         type:"Pistola Secundária",   cat:"secondary", mr:"MR 5",  how:"Market — 20k créditos",
+     rank:"early",  tags:["Beam","Chain","AoE"],
+     desc:"Pistola de feixe de calor que encadeia entre inimigos próximos. Excelente para limpeza de grupos no early/mid game. Não precisa de mira precisa — o feixe trava no alvo.",
+     stats:{crit:"14%", status:"28%", fire:"8.0/s"},
+     build:[
+       {name:"Hornet Strike",   why:"Dano base +220%"},
+       {name:"Barrel Diffusion",why:"Multishot +120%"},
+       {name:"Lethal Torrent",  why:"+60% multishot + fire rate"},
+       {name:"Pistol Gambit",   why:"+120% crit chance"},
+       {name:"Scorch",          why:"Heat para status"},
+       {name:"Pathogen Rounds", why:"Toxin para Gas (Toxin+Heat)"},
+       {name:"Deep Freeze",     why:"Cold para Viral com Pathogen"},
+       {name:"Heated Charge",   why:"Heat extra para status de fogo"}
+     ],
+     note:"Com 28% de status e encadeamento entre alvos, o Atomos aplica stacks de calor rapidamente em grupos. Ideal enquanto não tem acesso ao Kuva Nukor."
+    },
+    {id:"brokwar",  name:"Broken War",     type:"Espada Melee",         cat:"melee",     mr:"MR 0",  how:"Quest: The Second Dream (grátis)",
+     rank:"early",  tags:["Free","Slash","Crit"],
+     desc:"Espada dada grátis ao completar The Second Dream. Excelente crítico e Slash para uma arma gratuita. Pode ser transformada em War com parte adicional que cai do Stalker.",
+     stats:{crit:"25%", status:"10%", range:"2.5m"},
+     build:[
+       {name:"Pressure Point",     why:"Dano base +165%"},
+       {name:"Blood Rush",         why:"Crit escala com Combo Counter"},
+       {name:"Weeping Wounds",     why:"Status + Combo Counter"},
+       {name:"Condition Overload", why:"Meta melee de status"},
+       {name:"Organ Shatter",      why:"+90% multiplicador crítico"},
+       {name:"Berserker Fury",     why:"Velocidade com crits"},
+       {name:"Volcanic Edge",      why:"Heat — reduz armadura"},
+       {name:"Virulent Scourge",   why:"Toxin para Viral"}
+     ],
+     note:"Com 25% de crit base e Slash alto, é a melhor opção de melee gratuita do early game. Use até conseguir o Kronen Prime."
+    },
+    {id:"sobek",    name:"Sobek",          type:"Shotgun Primário",     cat:"primary",   mr:"MR 6",  how:"Market — 25k créditos",
+     rank:"early",  tags:["Auto-Shotgun","Status","Synergy"],
+     desc:"Shotgun automático Grineer com magazine grande e excelente status. Tem sinergia especial com Saryn e Cyte-09 via mod Acid Shells, que libera uma explosão Corrosiva em cada inimigo atingido.",
+     stats:{crit:"9%", status:"29%", fire:"3.0/s"},
+     build:[
+       {name:"Point Blank",      why:"Dano base de shotgun"},
+       {name:"Hell's Chamber",   why:"Multishot"},
+       {name:"Acid Shells",      why:"Sinergia com Saryn — explosão corrosiva"},
+       {name:"Chilling Grasp",   why:"Cold para Viral"},
+       {name:"Contagious Spread",why:"Toxin+Cold = Viral"},
+       {name:"Blaze",            why:"+dano + Heat"},
+       {name:"Sweeping Serration",why:"+Slash damage"},
+       {name:"Accelerated Blast",why:"Fire rate"}
+     ],
+     note:"Se você joga Saryn, o Sobek com Acid Shells vira sua melhor primary no early/mid game. A explosão Corrosiva é aplicada por cada projétil."
+    },
+    {id:"ignis_wr", name:"Ignis Wraith",   type:"Lança-chamas Primário",cat:"primary",   mr:"MR 9",  how:"Clan Dojo — Tenno Lab",
+     rank:"early",  tags:["Flamethrower","Status","AoE"],
+     desc:"Versão aprimorada do Ignis com magazine e dano maiores. Excelente para aplicar stacks de Heat em grupos. O melhor primer de Heat do early/mid game. Obtido no Dojo ou comprado via Trade.",
+     stats:{crit:"9%", status:"29%", fire:"6.67/s"},
+     build:[
+       {name:"Serration",       why:"Dano base +165%"},
+       {name:"Split Chamber",   why:"Multishot"},
+       {name:"Hellfire",        why:"Heat + Heat = mais stacks de calor"},
+       {name:"Infected Clip",   why:"Toxin + Heat = Gas cloud"},
+       {name:"Malignant Force", why:"Toxin + status chance"},
+       {name:"Rime Rounds",     why:"Cold para Viral"},
+       {name:"Thermite Rounds", why:"Heat extra + status"},
+       {name:"Point Strike",    why:"Crit chance"}
+     ],
+     note:"O Ignis Wraith está disponível no Clan Dojo (Tenno Lab). Caso seu clã não tenha pesquisado, compre o BP via Trade por 10–30p."
+    },
+    {id:"catchmoon",name:"Catchmoon",      type:"Kitgun Secundário",    cat:"secondary", mr:"MR 0",  how:"Fortuna — Rude Zuud (craftar com peças)",
+     rank:"early",  tags:["Kitgun","AoE","Shotgun-like"],
+     desc:"Kitgun craftável em Fortuna com câmara Catchmoon — dispara projétil de alta energia com AoE. Extremamente poderoso no early/mid game. Sem requisito de MR.",
+     stats:{crit:"22%", status:"24%", fire:"2.67/s"},
+     build:[
+       {name:"Hornet Strike",   why:"Dano base de pistola"},
+       {name:"Barrel Diffusion",why:"Multishot"},
+       {name:"Lethal Torrent",  why:"+multishot + fire rate"},
+       {name:"Pistol Gambit",   why:"Crit chance"},
+       {name:"Target Cracker",  why:"Multiplicador crítico"},
+       {name:"Scorch",          why:"Heat para status"},
+       {name:"Pathogen Rounds", why:"Toxin para Viral"},
+       {name:"Deep Freeze",     why:"Cold para combo Viral"}
+     ],
+     note:"A câmara Catchmoon é a mais acessível entre os Kitguns. Construa assim que chegar em Fortuna — carrega até o mid-game facilmente."
+    },
+    {id:"ohma",     name:"Ohma",           type:"Tonfas Melee",         cat:"melee",     mr:"MR 5",  how:"Market — 20k créditos",
+     rank:"early",  tags:["Electric","Tonfas","Status"],
+     desc:"Tonfas com dano elétrico inerente. Introduz a mecânica de combo de tonfas, a mesma do Kronen Prime. Ótimas para aprender o estilo antes de investir no Prime.",
+     stats:{crit:"15%", status:"25%", range:"1.0m"},
+     build:[
+       {name:"Pressure Point",     why:"Dano base"},
+       {name:"Blood Rush",         why:"Crit + Combo Counter"},
+       {name:"Weeping Wounds",     why:"Status + Combo"},
+       {name:"Condition Overload", why:"Meta de status"},
+       {name:"Organ Shatter",      why:"Mult. crítico"},
+       {name:"Berserker Fury",     why:"Velocidade"},
+       {name:"Volcanic Edge",      why:"Heat"},
+       {name:"Virulent Scourge",   why:"Toxin para Viral"}
+     ],
+     note:"Use as Ohma para aprender a mecânica de combo de Tonfas. A transição para Kronen Prime será natural — mesma build, bem mais poder."
+    },
+    {id:"soma_p",   name:"Soma Prime",     type:"Rifle Automático Primário",cat:"primary",mr:"MR 6", how:"Void Relics — Lith/Meso tiers",
+     rank:"early",  tags:["Auto","Crit","Classic"],
+     desc:"Versão Prime do Soma com excelente crítico base (30%). Um dos rifles mais usados da história do jogo. Eficiente no early/mid game com build de crítico. Partes acessíveis em Relics de baixo tier.",
+     stats:{crit:"30%", status:"10%", fire:"15/s"},
+     build:[
+       {name:"Serration",       why:"Dano base"},
+       {name:"Split Chamber",   why:"Multishot"},
+       {name:"Point Strike",    why:"Crit +150% — 30% base fica 75%"},
+       {name:"Vital Sense",     why:"Mult. crítico"},
+       {name:"Hunter Munitions",why:"Slash em crits — ignora armadura"},
+       {name:"Hellfire",        why:"Heat"},
+       {name:"Infected Clip",   why:"Toxin para Viral ou Gas"},
+       {name:"Rime Rounds",     why:"Cold para Viral com Infected Clip"}
+     ],
+     note:"O Soma Prime com Hunter Munitions aplica Slash que ignora armadura em cada crítico. Uma das combos mais populares do early/mid game."
+    }
+  ],
+  mid:[
+    {id:"ignis_mid",name:"Ignis Wraith",   type:"Lança-chamas Primário",cat:"primary",   mr:"MR 9",  how:"Clan Dojo — Tenno Lab",
+     rank:"mid",    tags:["Primer","AoE","Status"],
+     desc:"Continua sendo o melhor primer de Heat do mid-game. Com os mods corretos explora Viral+Heat, o combo mais eficiente do jogo. Substitua Split Chamber por Galvanized Aptitude se tiver acesso a Arbitration.",
+     stats:{crit:"9%", status:"29%", fire:"6.67/s"},
+     build:[
+       {name:"Serration",           why:"Dano base"},
+       {name:"Galvanized Aptitude", why:"Status escalável por kills"},
+       {name:"Split Chamber",       why:"Multishot — trocar por Galv. se possível"},
+       {name:"Hellfire",            why:"Heat para redução de armadura"},
+       {name:"Malignant Force",     why:"Toxin para Viral"},
+       {name:"Rime Rounds",         why:"Cold — Toxin+Cold = Viral"},
+       {name:"Thermite Rounds",     why:"Heat + status extra"},
+       {name:"Vigilante Armaments", why:"+multishot + uptier de críticos"}
+     ],
+     note:"No mid-game o Ignis com Viral+Heat nukes grupos inteiros em Hydron e Helene. Substitua mods básicos pelos Galvanized quando possível."
+    },
+    {id:"vhek",     name:"Vaykor Hek",     type:"Shotgun Primário",     cat:"primary",   mr:"MR 6",  how:"Syndicate: Steel Meridian (rank Crusader)",
+     rank:"mid",    tags:["Syndicate","Burst","Self-heal"],
+     desc:"Versão Syndicate do Hek com proc de Justice (cura em área) e quad-shot no alt-fire. Muito mais poderosa que o Hek base. Perfeita para jogadores de Steel Meridian no mid-game.",
+     stats:{crit:"17%", status:"19%", fire:"1.08/s"},
+     build:[
+       {name:"Point Blank",      why:"Dano base"},
+       {name:"Hell's Chamber",   why:"Multishot"},
+       {name:"Blaze",            why:"+dano + Heat"},
+       {name:"Chilling Grasp",   why:"Cold para Viral"},
+       {name:"Contagious Spread",why:"Toxin para Viral"},
+       {name:"Ravage",           why:"Crit mult de shotgun"},
+       {name:"Scattered Justice",why:"Syndicate — aumenta AoE do proc Justice"},
+       {name:"Accelerated Blast",why:"Fire rate + Puncture"}
+     ],
+     note:"O mod Scattered Justice aumenta o raio da cura (Justice) para todo o time. Excelente em missões longas de Survival."
+    },
+    {id:"kbramma",  name:"Kuva Bramma",    type:"Arco Explosivo Primário",cat:"primary",  mr:"MR 0",  how:"Kuva Lich — Cassini (Saturno) ou Adaro (Sedna)",
+     rank:"mid",    tags:["Kuva","AoE","Explosive","S-Tier"],
+     desc:"Arco de bombas explosivas em cluster que limpam salas inteiras. S-Tier há anos. Requer o Kuva Lich System (disponível após The War Within). Pode ter bônus elemental de até 60%.",
+     stats:{crit:"37%", status:"11%", fire:"1/s"},
+     build:[
+       {name:"Serration",        why:"Dano base"},
+       {name:"Split Chamber",    why:"Multishot"},
+       {name:"Point Strike",     why:"Crit — 37% base fica 92%"},
+       {name:"Vital Sense",      why:"Mult. crítico"},
+       {name:"Hunter Munitions", why:"Slash em crits — ignora armadura"},
+       {name:"Hellfire",         why:"Heat para status"},
+       {name:"Rime Rounds",      why:"Cold — Viral com Pathogen"},
+       {name:"Vigilante Supplies",why:"Recuperação de munição — EXILUS"}
+     ],
+     note:"Escolha Kuva Lich com bônus de Heat ou Viral. Um único tiro limpa grupos de 10–15 inimigos em Steel Path."
+    },
+    {id:"torid",    name:"Torid",          type:"Lançador Primário",    cat:"primary",   mr:"MR 4",  how:"Market — 100k créditos",
+     rank:"mid",    tags:["Gas","AoE","Incarnon Path"],
+     desc:"Lançador de granadas Infested que cria nuvens tóxicas. No mid-game já é forte; com Incarnon Genesis no endgame se torna o melhor primary do jogo. Invista Endo nesta arma.",
+     stats:{crit:"9%", status:"31%", fire:"1.08/s"},
+     build:[
+       {name:"Serration",       why:"Dano base"},
+       {name:"Split Chamber",   why:"Multishot"},
+       {name:"Malignant Force", why:"Toxin + status"},
+       {name:"Infected Clip",   why:"Toxin para Gas clouds maiores"},
+       {name:"Thermite Rounds", why:"Heat"},
+       {name:"Rime Rounds",     why:"Cold para Viral"},
+       {name:"Point Strike",    why:"Crit chance"},
+       {name:"Vital Sense",     why:"Mult. crítico"}
+     ],
+     note:"Farm o Incarnon Genesis do Torid no Steel Path Circuit assim que abrir Duviri. A forma evoluída cria nuvens escaláveis — S-tier no endgame."
+    },
+    {id:"gaze",     name:"Gaze (Kitgun)",  type:"Pistola Laser Secundária",cat:"secondary",mr:"MR 0",how:"Fortuna — Rude Zuud",
+     rank:"mid",    tags:["Kitgun","Beam","Status","Primer"],
+     desc:"Kitgun com câmara Gaze — feixe de laser com 34% de status. Excelente primer para aplicar múltiplos status antes de trocar para a primária. Perfeito com qualquer build de Condition Overload.",
+     stats:{crit:"14%", status:"34%", fire:"12/s"},
+     build:[
+       {name:"Hornet Strike",    why:"Dano base"},
+       {name:"Barrel Diffusion", why:"Multishot"},
+       {name:"Lethal Torrent",   why:"Fire rate + multishot"},
+       {name:"Scorch",           why:"Heat — status com feixe"},
+       {name:"Pathogen Rounds",  why:"Toxin para Viral"},
+       {name:"Deep Freeze",      why:"Cold para Viral"},
+       {name:"Pistol Gambit",    why:"Crit chance"},
+       {name:"Target Cracker",   why:"Mult. crítico"}
+     ],
+     note:"Com 34% de status e 12/s de fire rate, a Gaze aplica stacks quase instantaneamente. Perfeita como primer antes de usar um melee pesado."
+    },
+    {id:"galatine", name:"Galatine Prime", type:"Espada Pesada Melee",  cat:"melee",     mr:"MR 10", how:"Void Relics — Neo e Axi tiers",
+     rank:"mid",    tags:["Heavy Sword","Heavy Attack","Slam"],
+     desc:"Espada pesada com altíssimo dano de heavy attack. Excelente para builds de Heavy Attack com Amalgam Organ Shatter e Void Sling para recarregar o combo. Eficiente em Steel Path.",
+     stats:{crit:"20%", status:"20%", range:"3.0m"},
+     build:[
+       {name:"Pressure Point",        why:"Dano base"},
+       {name:"Amalgam Organ Shatter", why:"Mult. crítico + velocidade de Heavy Attack"},
+       {name:"Killing Blow",          why:"+heavy attack damage"},
+       {name:"Corrupt Charge",        why:"Heavy atk dano + começa com combo"},
+       {name:"Blood Rush",            why:"Crit escala — para normal attacks"},
+       {name:"Organ Shatter",         why:"Alternativo ao Amalgam"},
+       {name:"Volcanic Edge",         why:"Heat"},
+       {name:"Virulent Scourge",      why:"Toxin para Viral"}
+     ],
+     note:"Para Heavy Attack: recarregue o Combo Counter com Void Sling do Operador (Zenurik), faça um Heavy Attack. Repita. DPS absurdo sem combo automático."
+    },
+    {id:"nukor",    name:"Nukor",          type:"Pistola Laser Secundária",cat:"secondary",mr:"MR 5",how:"Market — 20k créditos",
+     rank:"mid",    tags:["Beam","Radiation","Primer"],
+     desc:"Versão base do Kuva Nukor. Feixe de Radiation com 33% de status. Eficiente como primer no mid-game. O Kuva Nukor (endgame) encadeia entre inimigos e é um dos melhores do jogo.",
+     stats:{crit:"11%", status:"33%", fire:"8.0/s"},
+     build:[
+       {name:"Hornet Strike",   why:"Dano base"},
+       {name:"Barrel Diffusion",why:"Multishot"},
+       {name:"Lethal Torrent",  why:"Fire rate + multishot"},
+       {name:"Pistol Gambit",   why:"Crit"},
+       {name:"Scorch",          why:"Heat"},
+       {name:"Pathogen Rounds", why:"Toxin"},
+       {name:"Deep Freeze",     why:"Cold para Viral"},
+       {name:"Target Cracker",  why:"Mult. crítico"}
+     ],
+     note:"Use o Nukor base para aprender a mecânica de primer. Quando acessar o Kuva Lich System, o Kuva Nukor será seu upgrade natural."
+    },
+    {id:"epitaph",  name:"Epitaph",        type:"Pistola Explosiva Secundária",cat:"secondary",mr:"MR 10",how:"Quest: Call of the Tempestarii + craft",
+     rank:"mid",    tags:["AoE","Status","Cold"],
+     desc:"Fogo alternado — modo normal aplica Cold, modo alternado dispara projétil explosivo de Viral. Extremamente versátil para primer e dano direto. BP disponível após Call of the Tempestarii.",
+     stats:{crit:"18%", status:"30%", fire:"4.0/s"},
+     build:[
+       {name:"Hornet Strike",   why:"Dano base"},
+       {name:"Barrel Diffusion",why:"Multishot"},
+       {name:"Lethal Torrent",  why:"Fire rate + multishot"},
+       {name:"Pistol Gambit",   why:"Crit"},
+       {name:"Target Cracker",  why:"Mult. crítico"},
+       {name:"Pathogen Rounds", why:"Toxin para Gas/Viral"},
+       {name:"Scorch",          why:"Heat"},
+       {name:"Augur Pact",      why:"Dano após usar ability"}
+     ],
+     note:"O alt-fire do Epitaph aplica Viral instantaneamente em grandes áreas. Ótimo para prime squads."
+    },
+    {id:"stropha",  name:"Stropha",        type:"Gunblade Melee",       cat:"melee",     mr:"MR 8",  how:"Railjack Corpus — Tenno Lab",
+     rank:"mid",    tags:["Gunblade","Heavy Attack","AoE"],
+     desc:"Gunblade que dispara projéteis no Heavy Attack. O Heavy Attack do Stropha é um dos mais poderosos do jogo — projétil de dano massivo. Excelente para missões com inimigos espalhados.",
+     stats:{crit:"24%", status:"20%", range:"0.5m"},
+     build:[
+       {name:"Pressure Point",        why:"Dano base"},
+       {name:"Amalgam Organ Shatter", why:"Mult. crítico + velocidade Heavy"},
+       {name:"Killing Blow",          why:"Heavy attack damage"},
+       {name:"Blood Rush",            why:"Crit + combo"},
+       {name:"Organ Shatter",         why:"Mult. crítico"},
+       {name:"Volcanic Edge",         why:"Heat"},
+       {name:"Virulent Scourge",      why:"Toxin para Viral"},
+       {name:"Drifting Contact",      why:"Duração do Combo Counter"}
+     ],
+     note:"O projétil do Heavy Attack tem range muito maior que o melee de 0.5m e causa dano absurdo com Amalgam Organ Shatter."
+    },
+    {id:"phenmor",  name:"Phenmor",        type:"Rifle Incarnon Primário",cat:"primary",  mr:"MR 3",  how:"Duviri Circuit — Steel Path (rotação semanal)",
+     rank:"mid",    tags:["Incarnon","Crit","Semi-Auto"],
+     desc:"Rifle de precisão que se transforma em arma automática na forma Incarnon. Excelente para single-target e grupos. A forma evoluída com headshots é devastadora contra qualquer inimigo.",
+     stats:{crit:"28%", status:"22%", fire:"3.33/s"},
+     build:[
+       {name:"Serration",          why:"Dano base"},
+       {name:"Split Chamber",      why:"Multishot"},
+       {name:"Point Strike",       why:"Crit — 28% base"},
+       {name:"Vital Sense",        why:"Mult. crítico"},
+       {name:"Hunter Munitions",   why:"Slash em crits"},
+       {name:"Hellfire",           why:"Heat"},
+       {name:"Rime Rounds",        why:"Cold para Viral"},
+       {name:"Galvanized Chamber", why:"Substitui Split Chamber se tiver Arbitration"}
+     ],
+     note:"Para ativar o Incarnon do Phenmor, acumule headshots no modo normal. A transformação aumenta drasticamente o fire rate e o DPS."
+    }
+  ],
+  late:[
+    {id:"rubico_p", name:"Rubico Prime",   type:"Sniper Primário",      cat:"primary",   mr:"MR 12", how:"Void Relics — Neo/Axi tiers",
+     rank:"late",   tags:["Sniper","Crit","S-Tier","Eidolon"],
+     desc:"O melhor sniper rifle do jogo. 35% de crit base, 5.0x multiplicador, penetração em headshots. Absolutamente obrigatório para Eidolon Hunting. Excelente para qualquer conteúdo de alto nível.",
+     stats:{crit:"35%", status:"9%", fire:"2.67/s"},
+     build:[
+       {name:"Serration",        why:"Dano base +165%"},
+       {name:"Split Chamber",    why:"Multishot"},
+       {name:"Point Strike",     why:"Crit — 35% base + 150% = 87%"},
+       {name:"Vital Sense",      why:"+120% mult. crítico"},
+       {name:"Galvanized Scope", why:"Crit escala em headshots"},
+       {name:"Hellfire",         why:"Heat — parte 1 do Radiation"},
+       {name:"Stormbringer",     why:"Electric — parte 2 (Heat+Elec = Radiation)"},
+       {name:"Argon Scope",      why:"Alternativa ao Galvanized Scope"}
+     ],
+     note:"Para Eidolons use APENAS Radiation (Heat+Electric). Para conteúdo geral use Viral+Heat. Com Galvanized Scope os crits ficam vermelhos em headshots."
+    },
+    {id:"nataruk",  name:"Nataruk",        type:"Arco Primário",        cat:"primary",   mr:"MR 0",  how:"Recompensa de The New War (grátis!)",
+     rank:"late",   tags:["Free","DPS","Versatile","S-Tier"],
+     desc:"Dado GRÁTIS ao completar The New War. DPS excepcional para MR 0. Tiro carregado cria explosão de gelo e sempre terá crítico se completamente carregado. Um dos melhores arcos do jogo.",
+     stats:{crit:"30%", status:"40%", fire:"1/s carregado"},
+     build:[
+       {name:"Serration",        why:"Dano base"},
+       {name:"Split Chamber",    why:"Multishot"},
+       {name:"Point Strike",     why:"Crit — 30% base"},
+       {name:"Vital Sense",      why:"Mult. crítico"},
+       {name:"Hunter Munitions", why:"Slash em crits — ignora armadura"},
+       {name:"Hellfire",         why:"Heat para status"},
+       {name:"Rime Rounds",      why:"Cold — Viral com Pathogen"},
+       {name:"Vigilante Supplies",why:"Recuperação de munição"}
+     ],
+     note:"O Nataruk tiro COMPLETAMENTE carregado tem 100% de crítico. Segure sempre até o fim da carga. Combina com Saryn e Mirage Mirror Clones."
+    },
+    {id:"knukor",   name:"Kuva Nukor",     type:"Pistola Laser Secundária",cat:"secondary",mr:"MR 13",how:"Kuva Lich — Cassini (Saturno) ou Adaro (Sedna)",
+     rank:"late",   tags:["Kuva","Chain","S-Tier","Primer"],
+     desc:"Considerada a melhor secundária do jogo por anos. Feixe de Radiation que encadeia até 4 inimigos aplicando status em todos. Multiplicador crítico de 5.0x. Pode chegar ao rank 40.",
+     stats:{crit:"11%", status:"35%", fire:"8.0/s"},
+     build:[
+       {name:"Hornet Strike",        why:"Dano base"},
+       {name:"Barrel Diffusion",     why:"Multishot"},
+       {name:"Lethal Torrent",       why:"Fire rate + multishot"},
+       {name:"Primed Pistol Gambit", why:"Crit +187%"},
+       {name:"Primed Target Cracker",why:"Mult. crítico 5x"},
+       {name:"Scorch",               why:"Heat para Viral+Heat"},
+       {name:"Pathogen Rounds",      why:"Toxin — Viral"},
+       {name:"Secondary Merciless",  why:"Arcane — escala DPS em kills"}
+     ],
+     note:"Escolha Kuva Lich com bônus de Magnetic, Viral ou Heat. Com Secondary Enervate também faz armor strip. Absolutamente meta."
+    },
+    {id:"kronen_p", name:"Kronen Prime",   type:"Tonfas Melee",         cat:"melee",     mr:"MR 12", how:"Void Relics — Neo/Axi tiers",
+     rank:"late",   tags:["Tonfas","Crit","AoE","S-Tier"],
+     desc:"Considerado o melhor melee de uso geral em 2025/2026. Altíssimo alcance para tonfas, velocidade excepcional e crítico que escala absurdamente com Blood Rush. Limpa Steel Path em spin attacks.",
+     stats:{crit:"22%", status:"22%", range:"1.7m"},
+     build:[
+       {name:"Primed Pressure Point",why:"Dano base máximo"},
+       {name:"Blood Rush",           why:"Crit +60% por nível de Combo"},
+       {name:"Weeping Wounds",       why:"Status + Combo Counter"},
+       {name:"Condition Overload",   why:"+120% dano por status"},
+       {name:"Berserker Fury",       why:"Velocidade em crits"},
+       {name:"Organ Shatter",        why:"Mult. crítico +90%"},
+       {name:"Volcanic Edge",        why:"Heat para armor reduction"},
+       {name:"Virulent Scourge",     why:"Toxin para Viral"}
+     ],
+     note:"Com Blood Rush em Combo x3 o Kronen Prime tem 200% de crit chance. Com Berserker Fury os spin attacks se tornam um liquidificador."
+    },
+    {id:"laetum",   name:"Laetum Incarnon",type:"Pistola Incarnon Secundária",cat:"secondary",mr:"MR 0",how:"Zariman — Angels of Zariman + Incarnon Genesis (Duviri Circuit)",
+     rank:"late",   tags:["Incarnon","Crit","AoE","Explosive"],
+     desc:"A melhor pistola do jogo na forma Incarnon. Projéteis explosivos de alto crítico que deletam alvos de elite. Headshots na forma evoluída encadeiam explosões em área.",
+     stats:{crit:"28%", status:"22%", fire:"2.5/s"},
+     build:[
+       {name:"Hornet Strike",        why:"Dano base"},
+       {name:"Barrel Diffusion",     why:"Multishot"},
+       {name:"Primed Pistol Gambit", why:"Crit — chave para headshot chains"},
+       {name:"Primed Target Cracker",why:"Mult. crítico"},
+       {name:"Scorch",               why:"Heat"},
+       {name:"Pathogen Rounds",      why:"Toxin para Viral"},
+       {name:"Deep Freeze",          why:"Cold para Viral"},
+       {name:"Secondary Merciless",  why:"Arcane — escala DPS em kills"}
+     ],
+     note:"Para ativar o Incarnon do Laetum, faça headshots no modo normal. A forma evoluída dispara projéteis explosivos que deletam grupos e bosses."
+    },
+    {id:"torid_inc",name:"Torid Incarnon",  type:"Lançador Incarnon Primário",cat:"primary",mr:"MR 4", how:"Market + Incarnon Genesis (Duviri Circuit — Steel Path)",
+     rank:"late",   tags:["Incarnon","Gas","AoE","S-Tier"],
+     desc:"O melhor primary do jogo em 2026. A forma Incarnon cria nuvens de Gas que escalam com inimigos — mais inimigos = mais dano por cloud. Steel Path fica trivial com build correta.",
+     stats:{crit:"9%", status:"31%", fire:"1.08/s"},
+     build:[
+       {name:"Serration",           why:"Dano base"},
+       {name:"Galvanized Chamber",  why:"Multishot escalável por kills"},
+       {name:"Galvanized Aptitude", why:"Status escalável — potencializa Gas"},
+       {name:"Hunter Munitions",    why:"Slash em crits — dano verdadeiro"},
+       {name:"Malignant Force",     why:"Toxin + status chance"},
+       {name:"Rime Rounds",         why:"Cold — Viral"},
+       {name:"Thermite Rounds",     why:"Heat extra"},
+       {name:"Primary Merciless",   why:"Arcane — DPS escalável em kills"}
+     ],
+     note:"As nuvens de Gas do Torid Incarnon ignoram armadura, causando dano verdadeiro. Farm o Incarnon Genesis no Steel Path Circuit assim que abrir Duviri."
+    },
+    {id:"glaive_p", name:"Glaive Prime",   type:"Glaive Melee",         cat:"melee",     mr:"MR 0",  how:"Void Relics — todas as tiers",
+     rank:"late",   tags:["Glaive","Slash","Hybrid","Versatile"],
+     desc:"Glaive clássico com excelente Slash e arremesso. Com o Arcane Melee Influence, arremessar o glaive eletrifica todos os inimigos ao redor do ponto de impacto.",
+     stats:{crit:"20%", status:"22%", range:"1.8m"},
+     build:[
+       {name:"Pressure Point",     why:"Dano base"},
+       {name:"Blood Rush",         why:"Crit + Combo"},
+       {name:"Weeping Wounds",     why:"Status + Combo"},
+       {name:"Condition Overload", why:"Meta de status"},
+       {name:"Organ Shatter",      why:"Mult. crítico"},
+       {name:"Volcanic Edge",      why:"Heat"},
+       {name:"Virulent Scourge",   why:"Toxin para Viral"},
+       {name:"Drifting Contact",   why:"Duração do Combo"}
+     ],
+     note:"Com Arcane Melee Influence, arremessar o Glaive Prime cria uma onda de Electric. Em Hydron e Disruption limpa grupos de 10 inimigos por arremesso."
+    },
+    {id:"felarx",   name:"Felarx Incarnon", type:"Shotgun Incarnon Primário",cat:"primary",mr:"MR 0", how:"Duviri Circuit — Steel Path (rotação semanal)",
+     rank:"late",   tags:["Incarnon","Shotgun","AoE","S-Tier"],
+     desc:"Shotgun Incarnon com forma evoluída automática de altíssimo DPS. Um dos Incarnon Genesis mais fortes do Duviri Circuit. Excelente para todos os tipos de conteúdo de late game.",
+     stats:{crit:"22%", status:"30%", fire:"2.5/s"},
+     build:[
+       {name:"Point Blank",        why:"Dano base shotgun"},
+       {name:"Hell's Chamber",     why:"Multishot de shotgun"},
+       {name:"Blaze",              why:"+dano + Heat"},
+       {name:"Chilling Grasp",     why:"Cold para Viral"},
+       {name:"Contagious Spread",  why:"Toxin para Viral"},
+       {name:"Ravage",             why:"Mult. crítico de shotgun"},
+       {name:"Seeking Fury",       why:"Punch-through + fire rate"},
+       {name:"Primary Merciless",  why:"Arcane escalável"}
+     ],
+     note:"A barra Incarnon do Felarx carrega rápido com kills próximos. Combine com Condition Overload no melee para DPS máximo."
+    },
+    {id:"dtoxo",    name:"Dual Toxocyst",  type:"Pistola Incarnon Secundária",cat:"secondary",mr:"MR 0",how:"Duviri Circuit — Steel Path (rotação semanal)",
+     rank:"late",   tags:["Incarnon","Headshot","Conditional","DPS"],
+     desc:"Pistola que ativa multiplicador massivo de dano em headshots. A forma Incarnon se beneficia do sistema Coda de The Hex. Headshots mantêm o buff ativo quase permanentemente.",
+     stats:{crit:"22%", status:"28%", fire:"4.0/s"},
+     build:[
+       {name:"Hornet Strike",        why:"Dano base"},
+       {name:"Barrel Diffusion",     why:"Multishot"},
+       {name:"Lethal Torrent",       why:"Fire rate + multishot"},
+       {name:"Primed Pistol Gambit", why:"Crit — headshots consistentes"},
+       {name:"Primed Target Cracker",why:"Mult. crítico"},
+       {name:"Scorch",               why:"Heat"},
+       {name:"Pathogen Rounds",      why:"Toxin para Viral"},
+       {name:"Secondary Merciless",  why:"Arcane escalável"}
+     ],
+     note:"O buff de headshot dura 4 segundos e reinicia a cada headshot. Em Survival e Defense o buff fica ativo praticamente 100% do tempo."
+    },
+    {id:"praedos",  name:"Praedos Incarnon",type:"Garras Melee",        cat:"melee",     mr:"MR 0",  how:"Duviri Circuit — Steel Path (rotação semanal)",
+     rank:"late",   tags:["Incarnon","Lifesteal","Tanky","Crit"],
+     desc:"Garras com Incarnon que incluem Lifesteal na forma evoluída. Com a evolução correta, você recupera HP com cada golpe crítico — qualquer Warframe fica quase imortal com a Praedos no melee.",
+     stats:{crit:"26%", status:"20%", range:"0.8m"},
+     build:[
+       {name:"Primed Pressure Point",why:"Dano base"},
+       {name:"Blood Rush",           why:"Crit escala com Combo Counter"},
+       {name:"Weeping Wounds",       why:"Status escala com Combo"},
+       {name:"Condition Overload",   why:"Meta de status"},
+       {name:"Berserker Fury",       why:"Velocidade máxima em crits"},
+       {name:"Organ Shatter",        why:"Mult. crítico +90%"},
+       {name:"Volcanic Edge",        why:"Heat"},
+       {name:"Virulent Scourge",     why:"Toxin para Viral"}
+     ],
+     note:"A evolução de Lifesteal recupera até 30% do dano como HP. Com Berserker Fury e ataques rápidos, você recupera HP mais rápido que toma dano."
+    }
+  ],
+  end:[
+    {id:"torid_sg", name:"Torid Incarnon",  type:"S-Tier Primário",     cat:"primary",   mr:"MR 4",  how:"Duviri Circuit — Steel Path",
+     rank:"endg",   tags:["#1 Primary","Gas AoE","Infinite Scale","Meta"],
+     desc:"O melhor primary do jogo em 2026 para Steel Path. Nuvens de Gas causam dano verdadeiro ignorando armadura. Em grupos densos, um único tiro pode matar dezenas de inimigos.",
+     stats:{crit:"9%", status:"31%", fire:"Incarnon auto"},
+     build:[
+       {name:"Serration",           why:"Dano base"},
+       {name:"Galvanized Chamber",  why:"Multishot escalável"},
+       {name:"Galvanized Aptitude", why:"Status escalável — potencializa Gas"},
+       {name:"Hunter Munitions",    why:"Slash em crits — ignora armor"},
+       {name:"Malignant Force",     why:"Toxin + status"},
+       {name:"Rime Rounds",         why:"Viral — máximo debuff de HP"},
+       {name:"Thermite Rounds",     why:"Heat + armor reduction"},
+       {name:"Primary Merciless",   why:"Arcane — +90% dano empilhável por kill"}
+     ],
+     note:"Build definitiva: Viral+Heat para debuff máximo, Hunter Munitions para Slash que ignora armadura, Galvanized mods para escalabilidade infinita. Primary Merciless empilha até +360% extra."
+    },
+    {id:"knukor_sg",name:"Kuva Nukor",      type:"S-Tier Secundária",   cat:"secondary", mr:"MR 13", how:"Kuva Lich — Cassini (Saturno)",
+     rank:"endg",   tags:["#1 Secondary","Chain Beam","Primer","Meta"],
+     desc:"A melhor secundária do jogo para Steel Path. Encadeia entre 4 alvos aplicando status simultaneamente. Com Secondary Enervate, também faz armor strip instantâneo.",
+     stats:{crit:"11%", status:"35%", fire:"8.0/s (chain)"},
+     build:[
+       {name:"Hornet Strike",          why:"Dano base"},
+       {name:"Galvanized Diffusion",   why:"Multishot escalável"},
+       {name:"Lethal Torrent",         why:"Fire rate + multishot"},
+       {name:"Primed Pistol Gambit",   why:"Crit +187%"},
+       {name:"Primed Target Cracker",  why:"5.0x mult. crítico"},
+       {name:"Scorch",                 why:"Heat — combina com Viral"},
+       {name:"Pathogen Rounds",        why:"Toxin + Cold = Viral"},
+       {name:"Secondary Enervate",     why:"Arcane — armor strip em status aplicados"}
+     ],
+     note:"Com Secondary Enervate o Kuva Nukor faz armor strip de TODOS os inimigos encadeados simultaneamente. Em grupos de 4+ inimigos é strip instantâneo para o squad."
+    },
+    {id:"kronen_sg",name:"Kronen Prime",    type:"S-Tier Melee",        cat:"melee",     mr:"MR 12", how:"Void Relics — Neo/Axi",
+     rank:"endg",   tags:["#1 Melee","Spin Attack","AoE","Meta"],
+     desc:"O melhor melee de uso geral para Steel Path. Spin attacks com alcance 1.7m + Blood Rush em combo x12 = crit de 900%+. Com Primed Reach, o AoE dos spin attacks cobre 4.5 metros.",
+     stats:{crit:"22%", status:"22%", range:"1.7m"},
+     build:[
+       {name:"Primed Pressure Point",  why:"Dano base máximo"},
+       {name:"Blood Rush",             why:"Combo x12 = +720% crit chance"},
+       {name:"Weeping Wounds",         why:"Combo x12 = 100% status chance"},
+       {name:"Condition Overload",     why:"+120% dano por tipo de status"},
+       {name:"Berserker Fury",         why:"Velocidade máxima em crits"},
+       {name:"Primed Reach",           why:"+165% range — 1.7m vira 4.5m de AoE"},
+       {name:"Volcanic Edge",          why:"Heat para armor reduction"},
+       {name:"Virulent Scourge",       why:"Toxin para Viral"}
+     ],
+     note:"Com Primed Reach no Kronen Prime, os spin attacks cobrem 4.5 metros. Em Hydron ou Disruption, gire uma vez e 8–10 inimigos morrem."
+    },
+    {id:"rubico_sg",name:"Rubico Prime",    type:"Sniper Eidolon",      cat:"primary",   mr:"MR 12", how:"Void Relics — Neo/Axi",
+     rank:"endg",   tags:["Eidolon","Sniper","Single-Target","Obrigatório"],
+     desc:"Obrigatório para Eidolon Hunting. 35% de crit base, 5.0x multiplicador e Radiation (Heat+Electric) para destruir as Synoviás dos Teralyst. Nenhuma outra arma tem essa combinação.",
+     stats:{crit:"35%", status:"9%", fire:"2.67/s"},
+     build:[
+       {name:"Serration",         why:"Dano base"},
+       {name:"Split Chamber",     why:"Multishot"},
+       {name:"Point Strike",      why:"Crit +150%"},
+       {name:"Vital Sense",       why:"Mult. crítico"},
+       {name:"Galvanized Scope",  why:"Crit escala em headshots"},
+       {name:"Hellfire",          why:"Heat — parte 1 do Radiation"},
+       {name:"Stormbringer",      why:"Electric — parte 2 (Heat+Elec = Radiation)"},
+       {name:"Argon Scope",       why:"Alternativa ao Galvanized Scope"}
+     ],
+     note:"Para Eidolons use APENAS Radiation. Com Void Strike do Operador ativo antes de atirar, o dano é multiplicado 3x."
+    },
+    {id:"laetum_sg",name:"Laetum Incarnon", type:"S-Tier Secundária",   cat:"secondary", mr:"MR 0",  how:"Zariman + Duviri Circuit (Steel Path)",
+     rank:"endg",   tags:["Incarnon","Explosive","Headshot Chain","Meta"],
+     desc:"Pistola que transforma em metralhadora explosiva de altíssimo crítico na forma Incarnon. Headshots causam reações em cadeia de explosões. Uma das secundárias mais fortes do Steel Path.",
+     stats:{crit:"28%", status:"22%", fire:"Incarnon burst"},
+     build:[
+       {name:"Hornet Strike",          why:"Dano base"},
+       {name:"Galvanized Diffusion",   why:"Multishot escalável"},
+       {name:"Primed Pistol Gambit",   why:"Crit"},
+       {name:"Primed Target Cracker",  why:"Mult. crítico"},
+       {name:"Scorch",                 why:"Heat"},
+       {name:"Pathogen Rounds",        why:"Viral"},
+       {name:"Deep Freeze",            why:"Cold para Viral"},
+       {name:"Secondary Merciless",    why:"Arcane +90% DPS empilhável"}
+     ],
+     note:"Ative o Incarnon com 4–5 headshots consecutivos. Na forma evoluída, cada tiro é um projétil explosivo que ricocheteia entre inimigos."
+    },
+    {id:"glaive_sg",name:"Glaive Prime",    type:"Top Melee AoE",       cat:"melee",     mr:"MR 0",  how:"Void Relics + Arcane Melee Influence",
+     rank:"endg",   tags:["Glaive","Lightning AoE","Electric","Arcane"],
+     desc:"Com Arcane Melee Influence, cada arremesso cria uma onda de eletricidade que atinge todos os inimigos no raio de impacto. Um arremesso pode devastar uma sala inteira no Steel Path.",
+     stats:{crit:"20%", status:"22%", range:"1.8m + AoE"},
+     build:[
+       {name:"Primed Pressure Point",  why:"Dano base"},
+       {name:"Blood Rush",             why:"Crit + Combo"},
+       {name:"Weeping Wounds",         why:"Status + Combo"},
+       {name:"Condition Overload",     why:"Meta de status"},
+       {name:"Organ Shatter",          why:"Mult. crítico"},
+       {name:"Volcanic Edge",          why:"Heat"},
+       {name:"Virulent Scourge",       why:"Toxin para Viral"},
+       {name:"Drifting Contact",       why:"Combo Duration"}
+     ],
+     note:"O Arcane Melee Influence dropa de Eidolons noturnos. Com Glaive Prime aplicando Electric, a onda cobre salas enormes no Steel Path."
+    },
+    {id:"felarx_sg",name:"Felarx Incarnon", type:"Top Shotgun Primário", cat:"primary",  mr:"MR 0",  how:"Duviri Circuit — Steel Path",
+     rank:"endg",   tags:["Incarnon","Shotgun","Burst","S-Tier"],
+     desc:"Shotgun Incarnon das mais fortes no Steel Path. Na forma evoluída dispara em modo automático com DPS absurdo. Excelente para Disruption e Survival com ondas densas.",
+     stats:{crit:"22%", status:"30%", fire:"Incarnon auto"},
+     build:[
+       {name:"Point Blank",           why:"Dano base shotgun"},
+       {name:"Hell's Chamber",        why:"Multishot"},
+       {name:"Blaze",                 why:"+dano + Heat"},
+       {name:"Chilling Grasp",        why:"Cold para Viral"},
+       {name:"Contagious Spread",     why:"Toxin para Viral"},
+       {name:"Ravage",                why:"Mult. crítico de shotgun"},
+       {name:"Galvanized Hell",       why:"Multishot escalável — Arbitration"},
+       {name:"Primary Merciless",     why:"Arcane escalável por kills"}
+     ],
+     note:"Combine com Condition Overload no melee para DPS máximo. A barra Incarnon carrega rápido com kills próximos."
+    },
+    {id:"ceramic",  name:"Ceramic Dagger",  type:"Melee Lifesteal",     cat:"melee",     mr:"MR 0",  how:"Duviri Circuit — Steel Path",
+     rank:"endg",   tags:["Incarnon","Lifesteal","Immortal","Finisher"],
+     desc:"Na forma Incarnon tem Lifesteal que recupera HP proporcional ao dano causado. Com alta velocidade de ataque e Blood Rush, você fica efetivamente imortal enquanto ataca.",
+     stats:{crit:"20%", status:"24%", range:"0.6m"},
+     build:[
+       {name:"Primed Pressure Point",  why:"Dano base"},
+       {name:"Blood Rush",             why:"Crit escala com Combo Counter"},
+       {name:"Weeping Wounds",         why:"Status escala com Combo"},
+       {name:"Condition Overload",     why:"+120% dano por status"},
+       {name:"Berserker Fury",         why:"Velocidade máxima em crits"},
+       {name:"Organ Shatter",          why:"Mult. crítico +90%"},
+       {name:"Volcanic Edge",          why:"Heat"},
+       {name:"Virulent Scourge",       why:"Toxin para Viral"}
+     ],
+     note:"A evolução Lifesteal recupera até 30% do dano como HP. Com Combo x12 e Berserker Fury, a velocidade é tão alta que você recupera HP mais rápido que toma dano."
+    },
+    {id:"kbramma_sg",name:"Kuva Bramma",    type:"Top AoE Primário",    cat:"primary",   mr:"MR 0",  how:"Kuva Lich — Cassini (Saturno)",
+     rank:"endg",   tags:["Kuva","Explosive","Room Clear","S-Tier"],
+     desc:"O arco explosivo de bombas em cluster ainda é S-tier. Um único tiro limpa salas no Steel Path. Use Vigilante Supplies no Exilus para nunca ficar sem flechas.",
+     stats:{crit:"37%", status:"11%", fire:"1/s"},
+     build:[
+       {name:"Serration",             why:"Dano base"},
+       {name:"Galvanized Chamber",    why:"Multishot escalável"},
+       {name:"Point Strike",          why:"Crit — 37% base"},
+       {name:"Vital Sense",           why:"Mult. crítico"},
+       {name:"Hunter Munitions",      why:"Slash em crits — ignora armadura"},
+       {name:"Hellfire",              why:"Heat"},
+       {name:"Rime Rounds",           why:"Cold para Viral"},
+       {name:"Vigilante Supplies",    why:"Recuperação de munição — EXILUS"}
+     ],
+     note:"O Kuva Bramma tem ammo economy ruim sem Vigilante Supplies no Exilus. Escolha bônus elemental de Viral ou Heat no Lich."
+    },
+    {id:"dtoxo_sg", name:"Dual Toxocyst",  type:"Top Conditional Secundária",cat:"secondary",mr:"MR 0",how:"Duviri Circuit + The Hex (Coda upgrade)",
+     rank:"endg",   tags:["Incarnon","Coda","Headshot","Conditional"],
+     desc:"Com o upgrade Coda de The Hex, a Dual Toxocyst Incarnon se torna o pico de DPS de pistola do jogo. O buff de headshot fica mais fácil de manter. A versão Coda Bassocyst tem stats ainda melhores.",
+     stats:{crit:"22%", status:"28%", fire:"Conditional burst"},
+     build:[
+       {name:"Hornet Strike",          why:"Dano base"},
+       {name:"Galvanized Diffusion",   why:"Multishot escalável"},
+       {name:"Lethal Torrent",         why:"Fire rate + multishot"},
+       {name:"Primed Pistol Gambit",   why:"Crit — headshots fáceis"},
+       {name:"Primed Target Cracker",  why:"Mult. crítico"},
+       {name:"Scorch",                 why:"Heat"},
+       {name:"Pathogen Rounds",        why:"Viral"},
+       {name:"Secondary Merciless",    why:"Arcane escalável — melhor combo com Toxocyst"}
+     ],
+     note:"A versão Coda (Bassocyst) tem o DPS condicional mais alto de qualquer secundária quando o buff de headshot está ativo. Mantenha headshots para DPS máximo."
+    }
+  ]
+};
+
+let currentPhase = 'early';
+let currentCat = 'all';
+let currentPage = 0;
+const CARDS_PER_PAGE = 3;
+
+function getFiltered() {
+  const list = WEAPONS[currentPhase] || [];
+  if (currentCat === 'all') return list;
+  return list.filter(w => w.cat === currentCat);
+}
+
+
+function getIcon(cat) {
+  if (cat === 'primary') return `<svg width="48" height="32" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="26" width="80" height="7" rx="2" fill="#5cc8f0" opacity="0.9"/>
+    <rect x="88" y="24" width="18" height="11" rx="1" fill="#4ab0d8"/>
+    <path d="M8 33 L2 44 L14 44 L18 33Z" fill="#4080d4" opacity="0.9"/>
+    <path d="M38 33 Q42 42 50 42 Q58 42 62 33Z" fill="none" stroke="#5cc8f0" stroke-width="2" opacity="0.7"/>
+    <line x1="48" y1="33" x2="50" y2="40" stroke="#d4a843" stroke-width="2"/>
+    <rect x="22" y="22" width="5" height="5" rx="1" fill="#d4a843" opacity="0.8"/>
+    <rect x="75" y="20" width="4" height="7" rx="1" fill="#d4a843" opacity="0.8"/>
+    <rect x="40" y="33" width="16" height="12" rx="2" fill="#3060a0" opacity="0.9"/>
+  </svg>`;
+  if (cat === 'secondary') return `<svg width="40" height="36" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="30" y="18" width="52" height="10" rx="2" fill="#5cc8f0" opacity="0.9"/>
+    <rect x="80" y="16" width="8" height="14" rx="1" fill="#4ab0d8"/>
+    <rect x="34" y="14" width="46" height="8" rx="2" fill="#3a90b8" opacity="0.8"/>
+    <rect x="30" y="28" width="30" height="20" rx="3" fill="#4080d4" opacity="0.9"/>
+    <path d="M30 48 Q26 60 32 68 L44 68 L44 48Z" fill="#3060a0"/>
+    <path d="M44 42 Q50 54 56 54 Q62 54 64 42" fill="none" stroke="#5cc8f0" stroke-width="2" opacity="0.7"/>
+    <line x1="52" y1="42" x2="54" y2="50" stroke="#d4a843" stroke-width="2.5"/>
+    <rect x="58" y="12" width="4" height="6" rx="1" fill="#d4a843" opacity="0.9"/>
+    <rect x="36" y="12" width="4" height="6" rx="1" fill="#d4a843" opacity="0.8"/>
+  </svg>`;
+  return `<svg width="32" height="44" viewBox="0 0 70 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M35 8 L48 62 L35 58 L22 62 Z" fill="#5cc8f0" opacity="0.85"/>
+    <path d="M35 8 L46 60 L35 54Z" fill="#a0e0f8" opacity="0.4"/>
+    <rect x="18" y="60" width="34" height="6" rx="2" fill="#d4a843" opacity="0.9"/>
+    <rect x="27" y="66" width="16" height="20" rx="3" fill="#3060a0" opacity="0.9"/>
+    <rect x="27" y="72" width="16" height="2" rx="1" fill="#5cc8f0" opacity="0.5"/>
+    <rect x="27" y="78" width="16" height="2" rx="1" fill="#5cc8f0" opacity="0.5"/>
+    <circle cx="35" cy="10" r="2" fill="#a0e0f8" opacity="0.9"/>
+  </svg>`;
+}
+
+function setPhase(phase, btn) {
+  currentPhase = phase;
+  currentPage = 0;
+  document.querySelectorAll('.phase-tab').forEach(b => b.className = 'phase-tab');
+  btn.classList.add('active-' + phase);
+  renderCards();
+}
+
+function setCat(cat, btn) {
+  currentCat = cat;
+  currentPage = 0;
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
+function carrNav(dir) {
+  const filtered = getFiltered();
+  const maxPage = Math.ceil(filtered.length / CARDS_PER_PAGE) - 1;
+  currentPage = Math.max(0, Math.min(maxPage, currentPage + dir));
+  renderCards();
+}
+
+function renderCards() {
+  const filtered = getFiltered();
+  const total = filtered.length;
+  const maxPage = Math.ceil(total / CARDS_PER_PAGE) - 1;
+  const start = currentPage * CARDS_PER_PAGE;
+  const slice = filtered.slice(start, start + CARDS_PER_PAGE);
+
+  const phaseLabels = {early:'Early Game',mid:'Mid Game',late:'Late Game',end:'Endgame'};
+  const catLabels = {all:'',primary:' — Primárias',secondary:' — Secundárias',melee:' — Melee'};
+  document.getElementById('carr-title').textContent =
+    (phaseLabels[currentPhase]||'') + ' — Top ' + total + (catLabels[currentCat]||'');
+  document.getElementById('carr-counter').textContent =
+    total === 0 ? '0' : `${start+1}–${Math.min(start+CARDS_PER_PAGE, total)} / ${total}`;
+  document.getElementById('carr-prev').disabled = currentPage <= 0;
+  document.getElementById('carr-next').disabled = currentPage >= maxPage;
+
+  const rankClass = {early:'early',mid:'mid',late:'late',end:'endg'};
+  const rc = rankClass[currentPhase] || 'early';
+
+  let html = '';
+  if (slice.length === 0) {
+    html = `<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text3);font-size:13px;">Nenhuma arma nessa categoria para esta fase.</div>`;
+  } else {
+    slice.forEach(w => {
+      const tags = w.tags.map(t => `<span class="wcard-tag tag-mr">${t}</span>`).join('');
+      html += `
+        <div class="wcard ${rc}" onclick="openModal('${w.id}')">
+          <div class="wcard-rank ${rc}">${(currentPhase==='end'?'Endgame':currentPhase==='late'?'Late Game':currentPhase==='mid'?'Mid Game':'Early Game').toUpperCase()}</div>
+          <div class="wcard-icon">${getIcon(w.cat)}</div>
+          <div class="wcard-name">${w.name}</div>
+          <div class="wcard-type">${w.type}</div>
+          <div class="wcard-tags">
+            <span class="wcard-tag tag-mr">${w.mr}</span>
+            <span class="wcard-tag tag-how" style="font-size:9px;">${w.how.split('—')[0].trim()}</span>
+          </div>
+          <div class="wcard-desc">${w.desc.substring(0,120)}…</div>
+          <div class="wcard-hint"><span>🔨</span> Clique para ver a build popular</div>
+        </div>`;
+    });
+  }
+  document.getElementById('cards-track').innerHTML = html;
+}
+
+// Flatten all weapons for modal lookup
+const ALL_WEAPONS = {};
+Object.values(WEAPONS).forEach(arr => arr.forEach(w => { ALL_WEAPONS[w.id] = w; }));
+
+function openModal(id) {
+  const w = ALL_WEAPONS[id];
+  if (!w) return;
+  document.getElementById('m-icon').innerHTML = getIcon(w.cat);
+  document.getElementById('m-name').textContent = w.name;
+  document.getElementById('m-sub').textContent = `${w.type} · ${w.mr} · ${w.how}`;
+  document.getElementById('modal-overlay').classList.add('open');
+
+  const statsHtml = `
+    <div class="modal-stats">
+      <div class="modal-stat"><div class="modal-stat-label">Crítico</div><div class="modal-stat-val">${w.stats.crit}</div></div>
+      <div class="modal-stat"><div class="modal-stat-label">Status</div><div class="modal-stat-val">${w.stats.status}</div></div>
+      <div class="modal-stat"><div class="modal-stat-label">${w.stats.range ? 'Range' : 'Fire Rate'}</div><div class="modal-stat-val">${w.stats.range || w.stats.fire}</div></div>
+    </div>`;
+
+  const modsHtml = w.build.map((m,i) =>
+    `<div class="build-mod">
+      <span class="build-mod-num">${i+1}</span>
+      <span class="build-mod-name">${m.name}</span>
+      <span class="build-mod-why">${m.why}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('m-body').innerHTML = `
+    <p class="modal-desc">${w.desc}</p>
+    ${statsHtml}
+    <div class="modal-section-title">Build Popular — 8 Mods</div>
+    <div class="build-grid">${modsHtml}</div>
+    <div class="build-note">${w.note}</div>
+    <div class="how-get"><strong>📍 Como obter:</strong> ${w.how}</div>`;
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// Initial render
+renderCards();
+</script>
+</div>
+
+<!-- ═══════════════════ FARM ═══════════════════ -->
+<div id="tab-farm" class="tab-panel">
+<div class="guide-wrap">
+  <div class="guide-section">
+    <h2>🌾 Guia de Farm de Recursos</h2>
+    <p class="guide-intro">Farm recursos apenas quando precisar — o inventário cresce naturalmente com a progressão. Argon Crystal decai após 24h fora do Void, então só o farme quando for usar. Use Resource Booster e Drop Chance Booster de Login Rewards para maximizar sessões de farm.</p>
+
+    <h3>Recursos Comuns (progresso natural)</h3>
+    <div class="res-grid">
+      <div class="res-card"><div class="res-name">Ferrite <span class="res-rarity r-common">Comum</span></div><div class="res-best">📍 Melhor local: Apollodorus, Mercury (Survival)</div><div class="res-note">Também cai abundantemente no Void e na Lua. Você vai ter de sobra naturalmente.</div></div>
+      <div class="res-card"><div class="res-name">Salvage <span class="res-rarity r-common">Comum</span></div><div class="res-best">📍 Melhor local: Cameria, Jupiter (Dark Sector Survival)</div><div class="res-note">Ou Wahiba, Marte. Usada em muito craft inicial.</div></div>
+      <div class="res-card"><div class="res-name">Alloy Plate <span class="res-rarity r-common">Comum</span></div><div class="res-best">📍 Melhor local: Gabii, Ceres (Dark Sector Survival)</div><div class="res-note">Também cai em Vênus e Fobos. Excesso praticamente garantido.</div></div>
+      <div class="res-card"><div class="res-name">Nano Spores <span class="res-rarity r-common">Comum</span></div><div class="res-best">📍 Melhor local: Piscinas, Saturno / Akkad, Eris (Survival)</div><div class="res-note">Helene, Saturno também é excelente e ainda dá Orokin Cells como bônus.</div></div>
+      <div class="res-card"><div class="res-name">Polymer Bundle <span class="res-rarity r-common">Comum</span></div><div class="res-best">📍 Melhor local: Assur / Ophelia, Urano (Survival)</div><div class="res-note">Apollodorus em Mercúrio também é uma opção acessível no início.</div></div>
+      <div class="res-card"><div class="res-name">Rubedo <span class="res-rarity r-common">Comum</span></div><div class="res-best">📍 Melhor local: Zeugma, Fobos ou qualquer Void Survival</div><div class="res-note">Cai em muitos lugares. Raramente vira problema.</div></div>
+    </div>
+
+    <h3>Recursos Incomuns (farm moderado)</h3>
+    <div class="res-grid">
+      <div class="res-card"><div class="res-name">Plastids <span class="res-rarity r-uncommon">Incomum</span></div><div class="res-best">📍 Melhor local: Piscinas, Saturno (Dark Sector Survival)</div><div class="res-note">Ophelia, Urano também é excelente. Helene (Saturno) é boa opção para quem quer XP junto.</div></div>
+      <div class="res-card"><div class="res-name">Morphics <span class="res-rarity r-uncommon">Incomum</span></div><div class="res-best">📍 Melhor local: Wahiba, Marte (Survival) ou boss Vor (Mercury)</div><div class="res-note">Bosses têm drop garantido. Captain Vor em Tolstoj, Mercury é o mais rápido.</div></div>
+      <div class="res-card"><div class="res-name">Gallium <span class="res-rarity r-uncommon">Incomum</span></div><div class="res-best">📍 Melhor local: Assur, Urano (Survival) ou boss Kril (Marte)</div><div class="res-note">Bosses têm taxa de drop melhorada. Lieutenant Lech Kril em War, Mars.</div></div>
+      <div class="res-card"><div class="res-name">Control Module <span class="res-rarity r-uncommon">Incomum</span></div><div class="res-best">📍 Melhor local: Io, Jupiter (Defense) ou Galatea, Neptune</div><div class="res-note">Io também é ótima para XP e drop de Oxium simultaneamente.</div></div>
+    </div>
+
+    <h3>Recursos Raros (farm direcionado)</h3>
+    <div class="res-grid">
+      <div class="res-card"><div class="res-name">Orokin Cell <span class="res-rarity r-rare">Raro</span></div><div class="res-best">📍 Melhor local: Gabii, Ceres (Survival) ou Seimeni, Ceres (Defense)</div><div class="res-note">Bosses de Ceres (Councilor Vay Hek / General Sargas Ruk) têm 50% de chance de dropar. Helene, Saturno também dropa mas em menor quantidade.</div></div>
+      <div class="res-card"><div class="res-name">Neurodes <span class="res-rarity r-rare">Raro</span></div><div class="res-best">📍 Melhor local: Lua — Tycho (Survival) ou Deimos (Derelict Survival)</div><div class="res-note">Tikal, Terra (Dark Sector Excavation) é outra opção acessível no início. Lephantis (Deimos) dropa com frequência.</div></div>
+      <div class="res-card"><div class="res-name">Neural Sensors <span class="res-rarity r-rare">Raro</span></div><div class="res-best">📍 Melhor local: Cameria, Jupiter (Dark Sector Survival)</div><div class="res-note">Raro e necessário em muito craft. Também cai na Kuva Fortress. Boss Alad V (Themisto, Jupiter) tem drop garantido.</div></div>
+      <div class="res-card"><div class="res-name">Nitain Extract <span class="res-rarity r-rare">Especial</span></div><div class="res-best">📍 Melhor local: Nightwave rewards / Ghoul Purge Bounties</div><div class="res-note">Não dropa de inimigos normalmente. Compre com Nora Cred (Nightwave) ou de Cetus durante eventos Ghoul. 5 Creds cada.</div></div>
+      <div class="res-card"><div class="res-name">Argon Crystal <span class="res-rarity r-special">Decaível!</span></div><div class="res-best">📍 Melhor local: Hepit, Void (Capture — rápido) ou Ani, Void (Survival)</div><div class="res-note">⚠️ Decai em 24h fora do Void! Farm SOMENTE quando for usar imediatamente. Oxomoco (Survival) para farm em quantidade.</div></div>
+      <div class="res-card"><div class="res-name">Tellurium <span class="res-rarity r-rare">Raro</span></div><div class="res-best">📍 Melhor local: Ophelia, Urano (Survival) ou Salacia, Neptune (Archwing)</div><div class="res-note">Caelus, Urano (Archwing Interception) também é eficiente. Raijack missions têm drop decente.</div></div>
+      <div class="res-card"><div class="res-name">Oxium <span class="res-rarity r-uncommon">Incomum</span></div><div class="res-best">📍 Melhor local: Io, Jupiter (Defense) ou Galatea, Neptune</div><div class="res-note">Mate os Oxium Ospreys antes que explodam — eles destroem o recurso se não forem mortos a tempo!</div></div>
+      <div class="res-card"><div class="res-name">Kuva <span class="res-rarity r-special">Especial</span></div><div class="res-best">📍 Melhor local: Kuva Fortress (Survival endless) ou Kuva Siphon missions</div><div class="res-note">Necessário para reroll de Riven Mods e crafting de armas Kuva. Kuva Survival é o farm mais rápido.</div></div>
+    </div>
+
+    <h3>🎯 Farm de XP / Mastery Rank</h3>
+    <div class="xp-list">
+      <div class="xp-item"><div class="xp-name">Helene, Saturno <span class="xp-tag">Recomendado iniciantes</span></div><div class="xp-desc">Defense com inimigos Grineer nível 15–25. Dropa Orokin Cells e Plastids como bônus. Mais acessível que Hydron para novos jogadores. Boa até MR 10+.</div></div>
+      <div class="xp-item"><div class="xp-name">Hydron, Sedna <span class="xp-tag">Clássico</span></div><div class="xp-desc">Defense com Grineer de nível alto. Máximo de XP por wave no Star Chart normal. Precisa desbloquear Sedna (Sedna Junction). O spot mais popular do jogo para leveling.</div></div>
+      <div class="xp-item"><div class="xp-name">Sanctuary Onslaught (SO) <span class="xp-tag">Warframes</span></div><div class="xp-desc">Ótimo para levar Warframes ao rank 30. Requer The New Strange. Acesso pelo Cephalon Simaris em qualquer Relay. Traz Khora como recompensa.</div></div>
+      <div class="xp-item"><div class="xp-name">Elite Sanctuary Onslaught (ESO) <span class="xp-tag">Armas — recomendado</span></div><div class="xp-desc">Melhor XP por minuto do jogo para armas. Requer Warframe rank 30 para entrar. Leve uma arma sem nível e deixe os companheiros matarem — a XP compartilhada é suficiente.</div></div>
+      <div class="xp-item"><div class="xp-name">Steel Path qualquer missão <span class="xp-tag">Endgame</span></div><div class="xp-desc">Inimigos de nível 100+ dão XP muito superior. Qualquer Steel Path Survival ou Defense é eficiente. Precisa completar todo o Star Chart para acessar.</div></div>
+    </div>
+
+    <h3>💎 Platinum F2P — Como conseguir sem pagar</h3>
+    <div class="xp-list">
+      <div class="xp-item"><div class="xp-name">Venda de Prime Parts</div><div class="xp-desc">Farme Void Relics em Fissure Missions e quebre-os para obter Prime Parts. Venda no Trading (Clan Dojo ou Maroo's Bazaar). Use warframe.market para verificar preços antes de vender.</div></div>
+      <div class="xp-item"><div class="xp-name">Venda de Mods Raros</div><div class="xp-desc">Corrupted Mods (Blind Rage, Fleeting Expertise, Narrow Minded), Mods de Arbitration e Mods de Syndicate têm boa demanda. Verifique preços em warframe.market.</div></div>
+      <div class="xp-item"><div class="xp-name">Venda de Arcanes</div><div class="xp-desc">Arcanes de Eidolon (Arcane Energize, Arcane Guardian) valem muito Plat. Farm com squad nos Eidolons de Cetus após ter Amp bom.</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════ DICAS ═══════════════════ -->
+<div id="tab-dicas" class="tab-panel">
+<div class="guide-wrap">
+  <div class="guide-section">
+    <h2>💡 Dicas Essenciais — Todos os Níveis</h2>
+
+    <h3>🟢 Para Iniciantes</h3>
+    <div class="tips-grid">
+      <div class="tip-card"><div class="tip-title">Platinum = Slots, não itens</div><div class="tip-body">Use Plat apenas para comprar Warframe Slots e Weapon Slots. Quase tudo pode ser farmado. Nunca compre Warframes ou armas com Plat — você pode conseguir de graça.</div></div>
+      <div class="tip-card"><div class="tip-title">Nunca venda armas antes do rank 30</div><div class="tip-body">Cada arma dá Mastery Rank XP somente uma vez. Se vender antes de maxar, perde esse XP para sempre. MR alto desbloqueia armas melhores.</div></div>
+      <div class="tip-card"><div class="tip-title">Mods > Equipamento</div><div class="tip-body">Um mod bem rankeado transforma qualquer arma. Invista Endo em Serration, Split Chamber e Vitality antes de qualquer coisa. Uma arma mediana bem moddada supera uma arma top sem mods.</div></div>
+      <div class="tip-card"><div class="tip-title">Forma com Orokin Catalyst/Reactor</div><div class="tip-body">Orokin Reactor (dourado) dobra a capacidade de mods do Warframe. Orokin Catalyst (azul) faz o mesmo para armas. Guarde para equipamentos que você vai manter por muito tempo.</div></div>
+      <div class="tip-card"><div class="tip-title">Junte-se a um clã ativo</div><div class="tip-body">Clãs dão acesso ao Dojo com Lab de Pesquisa (armas exclusivas), Trading e cooperação. Dagath, por exemplo, só é acessível via Dojo. Um clã ativo acelera muito a progressão.</div></div>
+      <div class="tip-card"><div class="tip-title">Nightwave — não ignore</div><div class="tip-body">Nightwave é o sistema de "passe de batalha" gratuito. Complete os desafios semanais para ganhar Nora Credits — usados para comprar Nitain Extract, Forma e Potatoes raros.</div></div>
+      <div class="tip-card"><div class="tip-title">Login Rewards valem ouro</div><div class="tip-body">Logins consecutivos acumulam recompensas progressivas. Dias 100, 200, 300+ dão mods Primed, Forma Bundle e Platinum. A consistência paga muito no longo prazo.</div></div>
+      <div class="tip-card"><div class="tip-title">Movimento é sobrevivência</div><div class="tip-body">Bullet Jump, Wall Latch e Void Dash (Operador) são ferramentas de combate, não só parkour. Você é difícil de matar em movimento. Nunca fique parado durante combate.</div></div>
+    </div>
+
+    <h3>🔵 Para Intermediários</h3>
+    <div class="tips-grid">
+      <div class="tip-card"><div class="tip-title">Corrupted Mods são obrigatórios</div><div class="tip-body">Blind Rage, Fleeting Expertise, Narrow Minded e Overextended definem builds de endgame. Farm nos Orokin Vaults no Deimos com Dragon Keys do Dojo. Priorize após The War Within.</div></div>
+      <div class="tip-card"><div class="tip-title">Helminth System (Subsume)</div><div class="tip-body">Após The Sacrifice, você pode "sacrificar" Warframes ao Helminth para transferir uma ability deles para outro frame. Ex: colocar Roar do Rhino em qualquer outro frame.</div></div>
+      <div class="tip-card"><div class="tip-title">Focus Schools</div><div class="tip-body">Desbloqueie um Focus School após The Second Dream (Naramon ou Zenurik são os melhores para iniciar). Zenurik dá regeneração de energia passiva. Naramon aumenta XP e combo.</div></div>
+      <div class="tip-card"><div class="tip-title">Void Relics e Prime Farming</div><div class="tip-body">Prime Parts são obtidos quebrando Relics em Void Fissure Missions. Cada Relic tem um tier (Lith, Meso, Neo, Axi). Use warframe.market para saber quais partes valem Plat antes de vender.</div></div>
+      <div class="tip-card"><div class="tip-title">Syndicate Standing diário</div><div class="tip-body">Escolha um Syndicate e acumule Standing diariamente. Standing máximo dá acesso a mods exclusivos (Augments), armas raras e Arcanes que valem muito no mercado.</div></div>
+      <div class="tip-card"><div class="tip-title">Liches e Sisters</div><div class="tip-body">Kuva Liches (Grineer) e Tenet Sisters (Corpus) são mini-bosses personalizados que dropam armas Kuva/Tenet exclusivas com bônus de elemento. Sistema complexo mas recompensador.</div></div>
+    </div>
+
+    <h3>🔴 Para Veteranos</h3>
+    <div class="tips-grid">
+      <div class="tip-card"><div class="tip-title">Steel Path desbloqueia tudo</div><div class="tip-body">Complete o Star Chart para acessar o Steel Path (inimigos +100 level, mais drops). Steel Path Incursions diárias dão Arcanes e Steel Essence para trocar por mods raros no Teshin.</div></div>
+      <div class="tip-card"><div class="tip-title">Galvanized Mods (Arbitration)</div><div class="tip-body">Galvanized Chamber, Savvy e Shot replaces seus equivalentes base. Comprados com Vitus Essence de Arbitration. Essenciais para qualquer build de endgame.</div></div>
+      <div class="tip-card"><div class="tip-title">Incarnon Genesis</div><div class="tip-body">Transformações Incarnon de armas clássicas obtidas via Steel Path Circuit no Duviri. Cada semana rotaciona armas disponíveis. Priorize: Felarx (rifle), Laetum (pistola), Praedos (melee).</div></div>
+      <div class="tip-card"><div class="tip-title">Archon Shards</div><div class="tip-body">Obtidas em Archon Hunts semanais (pós The New War). Inseridas no Warframe para bônus permanentes (Tauforged são douradas e mais fortes). Priorize 5x Tauforged Crimson para +75% força.</div></div>
+      <div class="tip-card"><div class="tip-title">Eidolon Hunting</div><div class="tip-body">Caça noturna de Eidolons em Cetus para Arcane Energize e Arcane Guardian — os melhores Arcanes do jogo. Requer squad, Amp bom e Operator desenvolvido com Void Strike ativo.</div></div>
+      <div class="tip-card"><div class="tip-title">Deep Archimedea (endgame alto)</div><div class="tip-body">Missão semanal difícil com modificadores em Sanctum Anatomica. Dropa Arcanes exclusivos e Cavia Standing extra. Requer Whispers in the Walls e rank alto na Cavia.</div></div>
+    </div>
+
+    <h3>⚠️ Erros Comuns — Evite</h3>
+    <div class="tips-grid">
+      <div class="tip-card"><div class="tip-title">Vender armas antes do rank 30</div><div class="tip-body">Você perde MR XP permanentemente. Sempre max antes de vender.</div></div>
+      <div class="tip-card"><div class="tip-title">Ignorar o Mastery Rank</div><div class="tip-body">MR alto desbloqueia armas, mods de syndicate, acesso a certas missões e aumenta o limite diário de Trading. Vale a pena maxar tudo que puder.</div></div>
+      <div class="tip-card"><div class="tip-title">Copiar builds sem entender</div><div class="tip-body">Builds de endgame requerem Forma múltiplas e mods raros. Se copiar sem ter os mods, a build não funciona. Entenda o porquê de cada mod antes de aplicar.</div></div>
+      <div class="tip-card"><div class="tip-title">Deixar o Necramech pra última hora</div><div class="tip-body">The New War requer Necramech. A foundry leva 72h+. Comece a farmar assim que abrir Deimos ou vai ficar travado na quest.</div></div>
+      <div class="tip-card"><div class="tip-title">Comprar frames/armas com Plat</div><div class="tip-body">Quase tudo é farmável. Platinum é escasso no início — guarde para slots. Prime Parts farmados também podem ser vendidos por Plat depois.</div></div>
+      <div class="tip-card"><div class="tip-title">Farmar recursos sem precisar</div><div class="tip-body">Recursos acumulam naturalmente com a progressão. Farm só quando precisar de algo específico para um craft. Argon Crystal em especial: só farme quando for usar imediatamente.</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer>
+  <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:10px;opacity:.4;display:block;margin:0 auto 10px;">
+    <path d="M50 10 C50 10 38 28 38 50 C38 62 44 72 50 78 C56 72 62 62 62 50 C62 28 50 10 50 10Z" fill="none" stroke="#d4a843" stroke-width="2"/>
+    <path d="M10 50 C10 50 28 38 50 38 C62 44 72 44 78 50 C72 56 62 62 50 62 C28 62 10 50 10 50Z" fill="none" stroke="#d4a843" stroke-width="2"/>
+    <circle cx="50" cy="50" r="7" fill="none" stroke="#d4a843" stroke-width="2"/>
+    <circle cx="50" cy="50" r="3" fill="#d4a843"/>
+  </svg>
+  <div style="margin-bottom:4px;letter-spacing:2px;text-transform:uppercase;font-size:10px;color:#3f5f80">WARFRAME ATLAS · Guia Definitivo</div>
+  Dados verificados na Wiki oficial do Warframe e fontes da comunidade · Junho 2025<br>
+  Clique em qualquer item do checklist para marcar como concluído · Progresso salvo localmente no navegador
+</footer>
+
+<script>
+// ─── TAB SYSTEM ───────────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── CHECKLIST DATA ───────────────────────────────────────────
+const DATA = [
+  {
+    id:"a1", label:"Arco 1 — Tutorial e despertar", color:"#9b7fe8",
+    tip:"🎯 Foco desta fase: aprender movimentação, conseguir mods básicos (Vitality, Serration, Split Chamber) e abrir os três mundos abertos. Não se perca tentando otimizar — avance o Star Chart.",
+    items:[
+      {id:"awakening",   name:"Awakening",              type:"q", note:"Tutorial inicial automático."},
+      {id:"vors",        name:"Vor's Prize",             type:"q", note:"Primeira quest obrigatória. Introduz mecânicas básicas."},
+      {id:"teacher",     name:"The Teacher",             type:"q", note:"Introduz Deimos / Albrecht Entrati."},
+      {id:"onceawake",   name:"Once Awake",              type:"q", note:"Introduz os Infested. Pré-req para Patient Zero e Koumei."},
+      {id:"howlkubrow",  name:"Howl of the Kubrow",      type:"f", note:"Desbloqueia companions (Kubrow). Pré-req: Earth junction."},
+      {id:"patientzero", name:"Patient Zero",            type:"s", note:"Recompensa: Mesa. Pré-req: Once Awake + Eris junction."},
+      {id:"hiddenmsg",   name:"Hidden Messages",         type:"f", note:"Recompensa: Mirage. Pré-req: MR 4+."},
+      {id:"limbo",       name:"Limbo Theorem",           type:"f", note:"Recompensa: Limbo. Pré-req: MR 2+."},
+      {id:"sayasvigil",  name:"Saya's Vigil",            type:"q", note:"Abre Cetus / Plains of Eidolon.",
+        sub:{id:"cetus", name:"🌿 Cetus — Plains of Eidolon", color:"#4caf88", items:[
+          {id:"cetus_b1",      name:"Bounties T1/T2 (nível 10–30)",             type:"t", prio:"m", note:"Farm mods Vigilante (Vigilante Armaments etc.) — difíceis de achar em outro lugar."},
+          {id:"cetus_koumei",  name:"Farmar Koumei",                            type:"f", prio:"g", note:"Shrine Defense em Saya's Visions, Terra. Pré-req: Saya's Vigil + Once Awake. Fale com Saya em Cetus."},
+          {id:"cetus_gara",    name:"Farmar Gara",                              type:"f", prio:"g", note:"BP dado ao completar Saya's Vigil. Partes nas bounties T2/T3 das Plains."},
+          {id:"cetus_drill",   name:"Comprar Nosam Cutter (Old Man Suumbaat)",  type:"t", prio:"g", note:"Laser de mineração para recursos de Cetus (Pyrol, Devar etc)."},
+          {id:"cetus_eidolon", name:"Eidolons noturnos",                        type:"t", prio:"d", note:"End-game — requer Amp desenvolvido e squad. Volte muito mais tarde."},
+        ]}
+      },
+      {id:"voxsolaris",  name:"Vox Solaris",             type:"q", note:"Abre Fortuna / Orb Vallis. BP da Garuda dado ao completar.",
+        sub:{id:"fortuna", name:"🏙️ Fortuna — Orb Vallis", color:"#4f8fe8", items:[
+          {id:"fort_drill",    name:"Comprar Sunpoint Plasma Drill (Smokefinger)", type:"t", prio:"m", note:"Laser superior — funciona em Cetus e Deimos também."},
+          {id:"fort_garuda",   name:"Farmar Garuda",                               type:"f", prio:"g", note:"BP recebido ao completar Vox Solaris. Partes nas bounties do Orb Vallis. Craft intensivo em recursos."},
+          {id:"fort_bounties", name:"Bounties T1/T2 — standing Solaris United",    type:"t", prio:"g", note:"Acumule para acessar Little Duck após The War Within."},
+          {id:"fort_hildryn",  name:"Farmar Hildryn",                              type:"f", prio:"d", note:"Boss end-game (Exploiter Orb). Ignore por enquanto."},
+        ]}
+      },
+      {id:"heartdeimos", name:"Heart of Deimos",         type:"q", note:"Abre Deimos / Cambion Drift. BP do Voidrig + acesso a Tyana Pass (Citrine).",
+        sub:{id:"deimos", name:"🧫 Deimos — Cambion Drift", color:"#e0894a", items:[
+          {id:"dei_necra_bp",  name:"Receber Blueprint do Voidrig (Necramech)",       type:"f", prio:"m", note:"Dado ao completar Heart of Deimos. OBRIGATÓRIO para The New War. Foundry leva 72h+."},
+          {id:"dei_citrine",   name:"Farmar Citrine",                                 type:"f", prio:"g", note:"Mirror Defense em Tyana Pass, Marte. Pré-req: Heart of Deimos + MR 3. Ótimo frame."},
+          {id:"dei_bounties",  name:"Bounties da Mother — standing Entrati",          type:"t", prio:"m", note:"Necessário para craftar peças refinadas do Voidrig."},
+          {id:"dei_vault_t1",  name:"Isolation Vaults T1 — partes do Voidrig",        type:"t", prio:"m", note:"Peças do Necramech dropam aqui. Comece cedo!"},
+          {id:"dei_xaku",      name:"Craftar Xaku",                                   type:"f", prio:"g", note:"BP grátis de Heart of Deimos. Partes nas bounties. Frame versátil."},
+          {id:"dei_lavos",     name:"Farmar Lavos",                                   type:"f", prio:"g", note:"Standing Entrati (Father, Rank Associate+). Ótimo para builds de elemento."},
+          {id:"dei_vault_23",  name:"Isolation Vaults T2/T3",                         type:"t", prio:"d", note:"Difíceis — volte com build desenvolvida."},
+        ]}
+      },
+      {id:"archwing",    name:"The Archwing",            type:"q", note:"Desbloqueia voo espacial. Necessário para Railjack."},
+      {id:"stolendreams",name:"Stolen Dreams",           type:"q", note:"Introduz Cephalon Simaris e o Sanctuary."},
+      {id:"newstrange",  name:"The New Strange",         type:"f", note:"Recompensa: Chroma. ⭐ Desbloqueia Sanctuary Onslaught (farm XP)."},
+      {id:"khora",       name:"Farmar Khora",            type:"f", note:"Sanctuary Onslaught normal (não o Elite). Pré-req: The New Strange. Acesso pelo Simaris em qualquer Relay."},
+      {id:"manofwords",  name:"A Man of Few Words",      type:"q", note:"Quest de lore do Darvo. Curta."},
+    ]
+  },
+  {
+    id:"a2", label:"Arco 2 — The War Within", color:"#4caf88",
+    tip:"🎯 Foco desta fase: completar The War Within e desenvolver o Operador. Após War Within, vá ao Onkko em Cetus para o Mote Amp grátis. Comece a farmar mods Corrompidos nos Orokin Vaults do Deimos.",
+    items:[
+      {id:"natah",       name:"Natah",                   type:"q", note:"Início da saga Sentient. Pré-req: Pluto junction."},
+      {id:"seconddream", name:"The Second Dream",        type:"q", note:"⭐ Revela o Operador. Um dos maiores plot twists do Warframe."},
+      {id:"silvergrove", name:"The Silver Grove",        type:"f", note:"Recompensa: Titania. Pode ser feita logo após Second Dream."},
+      {id:"sandsinaros", name:"Sands of Inaros",         type:"f", note:"Recompensa: Inaros. Pré-req: Second Dream. Comprada com Baro Ki'Teer (2500 Ducats)."},
+      {id:"octavia",     name:"Octavia's Anthem",        type:"f", note:"Recompensa: Octavia. Pré-req: Second Dream."},
+      {id:"voruna",      name:"Farmar Voruna",           type:"f", note:"Conjunction Survival na Lua (Yuvarium). Pré-req: The War Within. ⚠️ Craft requer Voidgel Orb do Zariman — só disponível após Angels of the Zariman."},
+      {id:"risingtide",  name:"Rising Tide",             type:"q", note:"Constrói o Railjack. Pré-req para Sedna Junction e The War Within."},
+      {id:"warwithin",   name:"The War Within",          type:"q", note:"⭐ Poderes do Operador. Pré-req: Sedna Junction (requer Rising Tide + missão Railjack + Vomvalysts + Ambulas).",
+        sub:{id:"pos_ww", name:"⚡ Pós The War Within — fazer agora", color:"#4caf88", items:[
+          {id:"cetus_amp",       name:"Pegar Mote Amp grátis (Onkko, Cetus)",    type:"t", prio:"m", note:"Entre como Operador na sala do Onkko. Primeira arma do Operador — obrigatória para progressão."},
+          {id:"fort_littleduck", name:"Acessar Little Duck (Fortuna)",            type:"t", prio:"g", note:"Rank 3+ de Vox Solaris. Vende Amps melhores (Klamora, Granmu, Certus)."},
+          {id:"fort_baruuk",     name:"Farmar Baruuk (Little Duck)",              type:"f", prio:"g", note:"Peças compradas com standing Vox Solaris. Bom frame de melee."},
+          {id:"vaults_start",    name:"Começar Orokin Vault runs (Corrupted Mods)",type:"t",prio:"m", note:"Dragon Keys no Dojo + missões Deimos. Farm Blind Rage, Fleeting Expertise, Narrow Minded — essenciais para builds."},
+        ]}
+      },
+      {id:"gauss",       name:"Farmar Gauss",            type:"f", note:"Disruption Rot-C em Kappa, Sedna (7,84%/peça). BP no Market. Sedna só abre após Sedna Junction."},
+      {id:"glastgambit", name:"The Glast Gambit",        type:"f", note:"Recompensa: Nidus. Pré-req: War Within."},
+      {id:"jordas",      name:"The Jordas Precept",      type:"f", note:"Recompensa: Atlas. Pré-req: War Within + Archwing."},
+      {id:"chainsharrow",name:"Chains of Harrow",        type:"q", note:"Quest de horror e lore. Forte em atmosfera."},
+      {id:"apostasy",    name:"Apostasy Prologue",       type:"q", note:"Curta mas importante. Pré-req: Personal Quarters Segment no Orbiter."},
+      {id:"sacrifice",   name:"The Sacrifice",           type:"q", note:"⭐ Recompensa: Excalibur Umbra + Mods Umbral. Emotiva e importante."},
+      {id:"revenant",    name:"Mask of the Revenant",    type:"f", note:"Recompensa: Revenant. Pré-req: The Sacrifice."},
+    ]
+  },
+  {
+    id:"a3", label:"Arco 3 — Prelúdio para The New War", color:"#e0894a",
+    tip:"⚠️ PRIORIDADE CRÍTICA: Tenha o Necramech (Voidrig) craftado e com mods básicos ANTES de entrar em The New War. A quest bloqueia sem ele. Foundry do Necramech leva 72h+ — comece em Deimos o quanto antes.",
+    items:[
+      {id:"chimerap",    name:"Chimera Prologue",         type:"q", note:"Cinemática curta. Pré-req: The Sacrifice."},
+      {id:"deadlock",    name:"Deadlock Protocol",        type:"f", note:"Recompensa: Protea + Xoris (melee excelente). Pré-req: Chimera Prologue."},
+      {id:"calltempest", name:"Call of the Tempestarii",  type:"f", note:"Recompensa: Sevagoth. Pré-req: Railjack ativo."},
+      {id:"erra",        name:"Erra",                     type:"q", note:"Pré-req: Chimera + Saturn Six Junction."},
+      {id:"newwar",      name:"The New War",              type:"q", note:"⭐ Quest cinematográfica longa. ⚠️ Tenha o Voidrig craftado e moddado antes. Recompensa: Nataruk (arco gratuito extremamente poderoso)."},
+    ]
+  },
+  {
+    id:"a4", label:"Arco 4 — The Void War", color:"#4f8fe8",
+    tip:"🎯 Foco desta fase: desenvolver o Zariman, completar o Steel Path e acessar conteúdo de endgame (Arbitration, Eidolons, Archon Hunts). The Duviri Paradox desbloqueia Incarnon Weapons via Steel Path Circuit.",
+    items:[
+      {id:"angels",      name:"Angels of the Zariman",   type:"q", note:"Novo hub pós New War. Desbloqueia Gyre e crafting de Voruna (Voidgel Orb).",
+        sub:{id:"zariman", name:"🌀 Zariman Ten Zero", color:"#9b7fe8", items:[
+          {id:"zar_gyre",     name:"Farmar Gyre",                              type:"f", prio:"g", note:"Bounties do Zariman (Quinn no Chrysalith)."},
+          {id:"voruna_craft", name:"Craftar Voruna",                           type:"f", prio:"g", note:"Agora possível — Voidgel Orb disponível no Zariman."},
+        ]}
+      },
+      {id:"caliban",     name:"Farmar Caliban",          type:"f", note:"Narmer Bounties nas Plains (dia) e Orb Vallis (noite) — após The New War."},
+      {id:"veilbreaker", name:"Veilbreaker",             type:"s", note:"Joga como Kahl-175. Desbloqueia Kahl's Garrison e missões semanais."},
+      {id:"styanax",     name:"Farmar Styanax",          type:"f", note:"Stock no Chipper (Kahl's Garrison). Requer Veilbreaker + ranks específicos."},
+      {id:"duviri",      name:"The Duviri Paradox",      type:"q", note:"⭐ Gameplay alternativo. Desbloqueia Steel Path Circuit (Incarnon Weapons).",
+        sub:{id:"duviri_s", name:"🌪️ Duviri — The Undercroft", color:"#e05555", items:[
+          {id:"duv_kullervo", name:"Farmar Kullervo",            type:"f", prio:"g", note:"Boss Kullervo no Undercroft. Peças com Kullervo's Bane (Acrithis)."},
+          {id:"duv_incarnon", name:"Steel Path Circuit — Incarnon Weapons",type:"t",prio:"m", note:"Priorize Felarx (rifle), Laetum (pistola) e Ceramic Dagger/Praedos (melee). Rotação semanal."},
+        ]}
+      },
+      {id:"dagath",      name:"Farmar Dagath",           type:"f", note:"BPs no Dagath's Hollow do Clan Dojo. Craft com Vainthorn do Abyssal Zone (Ceres) — Abyssal Beacons de Syndicate Rank 2."},
+      {id:"whispers",    name:"Whispers in the Walls",   type:"q", note:"⭐ Abre Sanctum Anatomica e Entrati Labs. Conecta o passado de Albrecht com 1999.",
+        sub:{id:"labs", name:"🔬 Sanctum Anatomica — Entrati Labs", color:"#9b7fe8", items:[
+          {id:"lab_qorvex", name:"Farmar Qorvex",  type:"f", prio:"g", note:"Standing Cavia (Bird 3, Rank 2–4). Pré-req: Whispers in the Walls."},
+          {id:"lab_dante",  name:"Farmar Dante",   type:"f", prio:"g", note:"Disruption Armatus, Deimos (Rot-C). Ou compre com Vessel Capillaries do Loid. Pré-req: Deadlock + Whispers."},
+        ]}
+      },
+      {id:"waverider",   name:"Waverider",              type:"f", note:"Recompensa: Yareli. Desafios de K-Drive em Fortuna."},
+      {id:"dante",       name:"Dante Unbound",          type:"f", note:"Recompensa: Dante (quest). Pré-req: Deadlock Protocol + Whispers in the Walls."},
+      {id:"lotuseaters", name:"The Lotus Eaters",       type:"q", note:"Warframe 1999 — primeira parte. Pré-req: Whispers in the Walls."},
+      {id:"jade",        name:"Jade Shadows",           type:"q", note:"Pré-req: The Lotus Eaters. Lore intensa de Orokin."},
+      {id:"jadewf",      name:"Farmar Jade (Warframe)", type:"f", note:"Ascension missions em Brutus, Urano (5% drop). BP obtido ao completar Jade Shadows."},
+      {id:"thehex",      name:"The Hex",                type:"q", note:"⭐ Quest mais recente (Warframe 1999, parte 2). Pré-req: Jade Shadows."},
+    ]
+  }
+];
+
+const KEY = "wf_guia_v1";
+function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } }
+function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} }
+let S = load();
+let arcOpen = {};
+let subOpen = {};
+for (const arc of DATA) { arcOpen[arc.id] = true; for (const it of arc.items) if (it.sub) subOpen[it.sub.id] = true; }
+
+function tog(id, e) { if (e) e.stopPropagation(); S[id] = !S[id]; save(S); render(); }
+function togArc(id) { arcOpen[id] = !arcOpen[id]; render(); }
+function togSub(id) { subOpen[id] = !subOpen[id]; render(); }
+function resetAll() { if (confirm("Resetar todo o progresso?")) { S = {}; save(S); render(); } }
+
+function pillHtml(t) {
+  const m = {q:['pq','quest'], f:['pf','warframe'], s:['ps','side'], t:['pt','tarefa']};
+  const [cls, lbl] = m[t] || ['pt','tarefa'];
+  return `<span class="pill ${cls}">${lbl}</span>`;
+}
+function prioHtml(p) {
+  if (p === "m") return '<span class="sprio pm">Obrigatório</span>';
+  if (p === "g") return '<span class="sprio pg">Recomendado</span>';
+  return '<span class="sprio pd">Opcional por ora</span>';
+}
+function subHtml(sub) {
+  const done = sub.items.filter(i => S[i.id]).length;
+  const open = subOpen[sub.id] !== false;
+  let h = `<div class="world-block"><div class="world-hdr ${open?'open':''}" onclick="event.stopPropagation();togSub('${sub.id}')"><div class="world-dot" style="background:${sub.color}"></div><div class="world-name">${sub.name}</div><span class="world-count">${done}/${sub.items.length}</span><span class="chevron ${open?'open':''}">▾</span></div>`;
+  if (open) {
+    h += `<div class="world-body">`;
+    for (const it of sub.items) {
+      const c = !!S[it.id];
+      const pt = it.type==='f'?'pf':it.type==='t'?'pt':'pq';
+      const pl = it.type==='f'?'warframe':it.type==='t'?'tarefa':'quest';
+      h += `<div class="sitem ${c?'done':''}" onclick="event.stopPropagation();tog('${it.id}',event)"><div class="schk ${c?'on':''}"></div><div class="sbody"><div class="siname">${it.name}<span class="pill ${pt}">${pl}</span></div><div class="sinote">${it.note}</div>${prioHtml(it.prio||'g')}</div></div>`;
+    }
+    h += `</div>`;
+  }
+  return h + `</div>`;
+}
+
+function render() {
+  let totalAll = 0, doneAll = 0;
+  function countSubs(items) { for (const it of items) if (it.sub) { totalAll += it.sub.items.length; doneAll += it.sub.items.filter(i => S[i.id]).length; } }
+  let html = "";
+  for (let ai = 0; ai < DATA.length; ai++) {
+    const arc = DATA[ai];
+    const total = arc.items.length, done = arc.items.filter(i => S[i.id]).length;
+    totalAll += total; doneAll += done; countSubs(arc.items);
+    const pct = total ? Math.round(done/total*100) : 0;
+    const open = arcOpen[arc.id] !== false;
+    html += `<div class="arc"><div class="arc-header" onclick="togArc('${arc.id}')"><div class="arc-bar" style="background:${arc.color}"></div><div class="arc-title">${arc.label}</div><span class="arc-count">${done}/${total}</span><span class="chevron ${open?'open':''}">▾</span></div><div class="arc-mini-bar"><div class="arc-mini-inner" style="width:${pct}%;background:${arc.color}"></div></div>`;
+    if (open) {
+      if (arc.tip) html += `<div class="arc-tip"><strong>💡 Foco do Arco</strong>${arc.tip}</div>`;
+      html += `<div class="item-list">`;
+      for (const it of arc.items) {
+        const c = !!S[it.id];
+        html += `<div class="item ${c?'done':''}" data-type="${it.type}" onclick="tog('${it.id}',event)"><div class="chk ${c?'on':''}"></div><div class="ibody"><span class="iname">${it.name}</span>${pillHtml(it.type)}<div class="inote">${it.note}</div></div></div>`;
+        if (it.sub) html += subHtml(it.sub);
+      }
+      html += `</div>`;
+    }
+    html += `</div>`;
+    if (ai < DATA.length - 1) html += `<hr class="arc-divider">`;
+  }
+  document.getElementById("root").innerHTML = html;
+  const pct = totalAll ? Math.round(doneAll/totalAll*100) : 0;
+  document.getElementById("gbar").style.width = pct + "%";
+  document.getElementById("gtxt").textContent = `${doneAll} de ${totalAll} itens concluídos`;
+  document.getElementById("s-total").textContent = totalAll;
+  document.getElementById("s-done").textContent = doneAll;
+  document.getElementById("s-left").textContent = totalAll - doneAll;
+  document.getElementById("s-pct").textContent = pct + "%";
+}
+render();
+</script>
+</body>
+</html>
